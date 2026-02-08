@@ -114,6 +114,11 @@ TEST(BatteryComparatorTests, InitCallsFunctions)
     init_battery_comparator_with_cpputest_checks();
 }
 
+TEST(BatteryComparatorTests, Deinit)
+{
+    deinit_battery_comparator();
+}
+
 TEST(BatteryComparatorTests, IsBatteryLowReadsPin)
 {
     init_battery_comparator_with_cpputest_checks();
