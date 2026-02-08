@@ -15,5 +15,8 @@
 /*----------------------------------------------------------------------------*/
 /*                         Public Function Prototypes                         */
 /*----------------------------------------------------------------------------*/
+void init_battery_comparator(void);
+void deinit_battery_comparator(void);
+bool is_battery_low(void);
 
 #endif /* BATTERY_COMPARATOR_H_ */
