@@ -15,5 +15,11 @@
 /*----------------------------------------------------------------------------*/
 /*                         Public Function Prototypes                         */
 /*----------------------------------------------------------------------------*/
+void init_leds(void);
+void deinit_leds(void);
+void set_led_d1_enabled(bool enabled);
+void set_led_d2_enabled(bool enabled);
+void set_led_d3_enabled(bool enabled);
+void set_led_d4_enabled(bool enabled);
 
 #endif /* LED_H_ */
