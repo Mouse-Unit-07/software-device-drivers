@@ -1,4 +1,4 @@
-# Repeat Hello World Repo
+# Device Drivers
 
-- Simple repo that utilizes the Hello World library via CMake's fetchcontent
-- Serves as an example of a project that has a dependency on another project
+- Library for abstracting hardware devices on the micromouse bot
+- Dependent on a HAL implementation for a processor
