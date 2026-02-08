@@ -49,6 +49,11 @@ extern "C"
 
 static bool mock_pin_value = false;
 
+void reset_all_flags(void)
+{
+    mock_pin_value = false;
+}
+
 void set_mock_pin_value(bool value)
 {
     mock_pin_value = value;
@@ -73,6 +78,15 @@ const gpio_hal_handler mock_handler = {
 
 }
 
+void init_battery_comparator_with_cpputest_checks(void)
+{
+    mock().expectOneCall("get_gpio_hal_handler")
+        .andReturnValue(&mock_handler);
+    mock().expectOneCall("get_battery_comparator_handle")
+        .andReturnValue(static_cast<const struct gpio_handle *>(nullptr));
+    init_battery_comparator();
+}
+
 /*============================================================================*/
 /*                                 Test Group                                 */
 /*============================================================================*/
@@ -80,6 +94,7 @@ TEST_GROUP(BatteryComparatorTests)
 {
     void setup() override
     {
+        reset_all_flags();
         mock().clear();
     }
 
@@ -87,6 +102,7 @@ TEST_GROUP(BatteryComparatorTests)
     {
         mock().checkExpectations();
         mock().clear();
+        reset_all_flags();
     }
 };
 
@@ -95,12 +111,14 @@ TEST_GROUP(BatteryComparatorTests)
 /*============================================================================*/
 TEST(BatteryComparatorTests, InitCallsFunctions)
 {
-    mock().expectOneCall("get_gpio_hal_handler")
-        .andReturnValue(&mock_handler);
-    mock().expectOneCall("get_battery_comparator_handle")
-        .andReturnValue(static_cast<const struct gpio_handle *>(nullptr));
-
-    init_battery_comparator();
+    init_battery_comparator_with_cpputest_checks();
 }
 
-
+TEST(BatteryComparatorTests, IsBatteryLowReadsPin)
+{
+    init_battery_comparator_with_cpputest_checks();
+    set_mock_pin_value(1);
+    CHECK(is_battery_low() == false);
+    set_mock_pin_value(0);
+    CHECK(is_battery_low() == true);
+}

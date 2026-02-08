@@ -41,7 +41,7 @@ void deinit_battery_comparator(void)
 
 bool is_battery_low(void)
 {
-    
+    return (gpio_handler->read_gpio_pin(battery_comparator) == 0);
 }
 
 /*----------------------------------------------------------------------------*/
