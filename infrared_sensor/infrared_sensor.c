@@ -41,7 +41,7 @@ void init_infrared_sensors(void)
 
 void deinit_infrared_sensors(void)
 {
-
+    /* nothing to clear/reset  */
 }
 
 uint32_t read_ir_1_sensor(void)

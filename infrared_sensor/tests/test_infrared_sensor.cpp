@@ -166,6 +166,11 @@ TEST(InfraredSensorTests, InitCallsFunctions)
     init_infrared_sensors_with_cpputest_checks();
 }
 
+TEST(InfraredSensorTests, Deinit)
+{
+    deinit_infrared_sensors();
+}
+
 TEST(InfraredSensorTests, ReadIrSensorReadsAdcValue)
 {
     init_infrared_sensors_with_cpputest_checks();
