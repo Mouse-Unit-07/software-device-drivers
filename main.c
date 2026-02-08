@@ -1,14 +1,14 @@
 /*-------------------------------- FILE INFO ---------------------------------*/
 /* Filename           : main.c                                                */
 /*                                                                            */
-/* main file for for flashing/testing repeat_hello_world library on mcu       */
+/* main file for for flashing/testing processor library on mcu                */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                               Include Files                                */
 /*----------------------------------------------------------------------------*/
-#include "repeat_hello_world/repeat_hello_world.h"
+#include "processor/processor.h"
 
 /*----------------------------------------------------------------------------*/
 /*                                 Debug Space                                */
@@ -34,5 +34,5 @@
 /*----------------------------------------------------------------------------*/
 int main(void)
 {
-    print_hello_world_twice();
+
 }

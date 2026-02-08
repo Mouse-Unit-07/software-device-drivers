@@ -1,25 +1,21 @@
 /*-------------------------------- FILE INFO ---------------------------------*/
-/* Filename           : repeat_hello_world.c                                  */
+/* Filename           : wheel_motor.c                                           */
 /*                                                                            */
-/* Implementation w/ a function to print Hello World twice                    */
+/* Implementation for a wheel_motor device                                      */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                               Include Files                                */
 /*----------------------------------------------------------------------------*/
-#include <stdio.h>
-#include "print_hello_world.h"
-#include "repeat_hello_world.h"
+#include "gpio_hal_config.h"
+#include "pwm_hal_config.h"
+#include "wheel_motor.h"
 
 /*----------------------------------------------------------------------------*/
 /*                         Public Function Definitions                        */
 /*----------------------------------------------------------------------------*/
-void print_hello_world_twice(void)
-{
-    print_hello_world();
-    print_hello_world();
-}
+
 
 /*----------------------------------------------------------------------------*/
 /*                        Private Function Definitions                        */

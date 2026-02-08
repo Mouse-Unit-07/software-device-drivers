@@ -1,7 +1,7 @@
 /*================================ FILE INFO =================================*/
-/* Filename           : test_repeat_hello_world.cpp                           */
+/* Filename           : test_battery_comparator.cpp                           */
 /*                                                                            */
-/* Test implementation for repeat_hello_world.c                               */
+/* Test implementation for battery_comparator.c                               */
 /*                                                                            */
 /*============================================================================*/
 
@@ -9,7 +9,7 @@
 /*                               Include Files                                */
 /*============================================================================*/
 extern "C" {
-#include "repeat_hello_world.h"
+#include "battery_comparator.h"
 }
 
 #include <CppUTest/TestHarness.h>
@@ -18,9 +18,9 @@ extern "C" {
 /*============================================================================*/
 /*                            Mock Implementations                            */
 /*============================================================================*/
-extern "C" void print_hello_world(void)
+extern "C"
 {
-    mock().actualCall("print_hello_world");
+
 }
 
 /*============================================================================*/
@@ -31,25 +31,23 @@ extern "C" void print_hello_world(void)
 /*============================================================================*/
 /*                                 Test Group                                 */
 /*============================================================================*/
-TEST_GROUP(RepeatHelloWorldTests)
+TEST_GROUP(BatteryComparatorTests)
 {
     void setup() override
     {
-        mock().clear();
+
     }
 
     void teardown() override
     {
-        mock().checkExpectations();
-        mock().clear();
+
     }
 };
 
 /*============================================================================*/
 /*                                    Tests                                   */
 /*============================================================================*/
-TEST(RepeatHelloWorldTests, CallsPrintTwice)
+TEST(BatteryComparatorTests, DeleteMe)
 {
-    mock().expectNCalls(2, "print_hello_world");
-    print_hello_world_twice();
+
 }

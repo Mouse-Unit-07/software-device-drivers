@@ -1,11 +1,11 @@
 /*-------------------------------- FILE INFO ---------------------------------*/
-/* Filename           : repeat_hello_world.h                                  */
+/* Filename           : led.h                                                 */
 /*                                                                            */
-/* Interface w/ a function to repeat Hello World                              */
+/* Interface for a led device                                                 */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#ifndef REPEAT_HELLO_WORLD_H_
-#define REPEAT_HELLO_WORLD_H_
+#ifndef LED_H_
+#define LED_H_
 
 /*----------------------------------------------------------------------------*/
 /*                             Public Definitions                             */
@@ -15,6 +15,5 @@
 /*----------------------------------------------------------------------------*/
 /*                         Public Function Prototypes                         */
 /*----------------------------------------------------------------------------*/
-void print_hello_world_twice(void);
 
-#endif /* REPEAT_HELLO_WORLD_H_ */
+#endif /* LED_H_ */
