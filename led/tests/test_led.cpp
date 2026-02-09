@@ -21,9 +21,6 @@ extern "C" {
 /*============================================================================*/
 /*                            Mock Implementations                            */
 /*============================================================================*/
-extern "C"
-{
-
 const struct gpio_hal_handler *get_gpio_hal_handler(void)
 {
     return static_cast<const struct gpio_hal_handler *>(
@@ -64,15 +61,9 @@ const struct gpio_handle *get_led_d4_handle(void)
     );
 }
 
-}
-
 /*============================================================================*/
 /*                             Public Definitions                             */
 /*============================================================================*/
-
-extern "C"
-{
-
 /* the definition of "struct gpio_handle" is hardware specific, so we mock */
 struct gpio_handle {
     uint32_t mock_value;
@@ -127,8 +118,6 @@ const struct gpio_hal_handler mock_handler = {
     mock_write_gpio_pin,
     dummy_toggle_gpio_pin
 };
-
-}
 
 void init_leds_with_cpputest_checks(void)
 {
