@@ -20,8 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /*                         Private Function Prototypes                        */
 /*----------------------------------------------------------------------------*/
-void wheel_motor_1_encoder_channel_a_isr(void);
-void wheel_motor_2_encoder_channel_a_isr(void);
+/* none */
 
 /*----------------------------------------------------------------------------*/
 /*                               Private Globals                              */
@@ -32,6 +31,9 @@ static const struct eic_handle *wheel_motor_2_encoder_channel_a = NULL;
 static const struct gpio_hal_handler *gpio_handler = NULL;
 static const struct gpio_handle *wheel_motor_1_encoder_channel_b = NULL;
 static const struct gpio_handle *wheel_motor_2_encoder_channel_b = NULL;
+
+static volatile int32_t wheel_motor_1_encoder_ticks = 0;
+static volatile int32_t wheel_motor_2_encoder_ticks = 0;
 
 /*----------------------------------------------------------------------------*/
 /*                         Public Function Definitions                        */
@@ -47,6 +49,9 @@ void init_magnetic_encoders(void)
 
     eic_handler->set_external_callback(wheel_motor_1_encoder_channel_a, wheel_motor_1_encoder_channel_a_isr);
     eic_handler->set_external_callback(wheel_motor_2_encoder_channel_a, wheel_motor_2_encoder_channel_a_isr);
+
+    wheel_motor_1_encoder_ticks = 0u;
+    wheel_motor_2_encoder_ticks = 0u;
 }
 
 void deinit_magnetic_encoders(void)
@@ -54,24 +59,24 @@ void deinit_magnetic_encoders(void)
 
 }
 
-int32_t get_motor_1_encoder_ticks(void)
+int32_t get_wheel_motor_1_encoder_ticks(void)
 {
-    return 0;
+    return wheel_motor_1_encoder_ticks;
 }
 
-int32_t get_motor_2_encoder_ticks(void)
+int32_t get_wheel_motor_2_encoder_ticks(void)
 {
-    return 0;
+    return wheel_motor_2_encoder_ticks;
 }
 
-void clear_motor_1_encoder_ticks(void)
+void clear_wheel_motor_1_encoder_ticks(void)
 {
-
+    wheel_motor_1_encoder_ticks = 0;
 }
 
-void clear_motor_2_encoder_ticks(void)
+void clear_wheel_motor_2_encoder_ticks(void)
 {
-
+    wheel_motor_2_encoder_ticks = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,10 +84,18 @@ void clear_motor_2_encoder_ticks(void)
 /*----------------------------------------------------------------------------*/
 void wheel_motor_1_encoder_channel_a_isr(void)
 {
-
+    if (gpio_handler->read_gpio_pin(wheel_motor_1_encoder_channel_b) == 0) {
+        wheel_motor_1_encoder_ticks++;
+    } else {
+        wheel_motor_1_encoder_ticks--;
+    }
 }
 
 void wheel_motor_2_encoder_channel_a_isr(void)
 {
-
+    if (gpio_handler->read_gpio_pin(wheel_motor_2_encoder_channel_b) == 0) {
+        wheel_motor_2_encoder_ticks--;
+    } else {
+        wheel_motor_2_encoder_ticks++;
+    }
 }

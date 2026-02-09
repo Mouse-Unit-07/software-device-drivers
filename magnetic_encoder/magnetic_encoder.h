@@ -22,4 +22,8 @@ int32_t get_wheel_motor_2_encoder_ticks(void);
 void clear_wheel_motor_1_encoder_ticks(void);
 void clear_wheel_motor_2_encoder_ticks(void);
 
+/* exposed for testing */
+void wheel_motor_1_encoder_channel_a_isr(void);
+void wheel_motor_2_encoder_channel_a_isr(void);
+
 #endif /* MAGNETIC_ENCODER_H_ */
