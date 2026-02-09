@@ -21,9 +21,6 @@ extern "C" {
 /*============================================================================*/
 /*                            Mock Implementations                            */
 /*============================================================================*/
-extern "C"
-{
-
 const struct adc_hal_handler *get_adc_hal_handler(void)
 {
     return static_cast<const struct adc_hal_handler *>(
@@ -64,14 +61,9 @@ const struct adc_handle *get_ir_sensor_4_handle(void)
     );
 }
 
-}
-
 /*============================================================================*/
 /*                             Public Definitions                             */
 /*============================================================================*/
-extern "C"
-{
-
 /* the definition of "struct adc_handle" is hardware specific, so we mock */
 struct adc_handle {
     uint32_t mock_value;
@@ -121,8 +113,6 @@ const struct adc_hal_handler mock_handler = {
     dummy_deinit_adc,
     mock_read_adc_channel
 };
-
-}
 
 void init_infrared_sensors_with_cpputest_checks(void)
 {

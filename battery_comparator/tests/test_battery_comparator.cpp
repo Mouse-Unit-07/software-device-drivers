@@ -20,9 +20,6 @@ extern "C" {
 /*============================================================================*/
 /*                            Mock Implementations                            */
 /*============================================================================*/
-extern "C"
-{
-
 const struct gpio_hal_handler *get_gpio_hal_handler(void)
 {
     return static_cast<const struct gpio_hal_handler *>(
@@ -39,14 +36,9 @@ const struct gpio_handle *get_battery_comparator_handle(void)
     );
 }
 
-}
-
 /*============================================================================*/
 /*                             Public Definitions                             */
 /*============================================================================*/
-extern "C"
-{
-
 static bool mock_pin_value = false;
 
 void reset_all_flags(void)
@@ -75,8 +67,6 @@ const gpio_hal_handler mock_handler = {
     dummy_write_gpio_pin,
     dummy_toggle_gpio_pin
 };
-
-}
 
 void init_battery_comparator_with_cpputest_checks(void)
 {
