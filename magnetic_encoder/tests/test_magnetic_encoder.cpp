@@ -237,6 +237,16 @@ TEST(MagneticEncoderTests, InitResetsTicks)
     CHECK(get_encoder_2_ticks() == 0);
 }
 
+TEST(MagneticEncoderTests, DeinitResetsTicks)
+{
+    init_magnetic_encoders_with_cpputest_checks();
+    encoder_1_isr();
+    encoder_2_isr();
+    deinit_magnetic_encoders();
+    CHECK(get_encoder_1_ticks() == 0);
+    CHECK(get_encoder_2_ticks() == 0);
+}
+
 TEST(MagneticEncoderTests, IsrsChangesTicks)
 {
     init_magnetic_encoders_with_cpputest_checks();

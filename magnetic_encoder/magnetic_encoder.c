@@ -50,13 +50,14 @@ void init_magnetic_encoders(void)
     eic_handler->set_external_callback(encoder_1_channel_a, encoder_1_isr);
     eic_handler->set_external_callback(encoder_2_channel_a, encoder_2_isr);
 
-    encoder_1_ticks = 0u;
-    encoder_2_ticks = 0u;
+    encoder_1_ticks = 0;
+    encoder_2_ticks = 0;
 }
 
 void deinit_magnetic_encoders(void)
 {
-
+    encoder_1_ticks = 0;
+    encoder_2_ticks = 0;
 }
 
 int32_t get_encoder_1_ticks(void)
