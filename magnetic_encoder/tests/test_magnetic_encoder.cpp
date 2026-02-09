@@ -31,18 +31,18 @@ const struct eic_hal_handler *get_eic_hal_handler(void)
     );
 }
 
-const struct eic_handle *get_motor_1_encoder_handle(void)
+const struct eic_handle *get_encoder_1_channel_a_handle(void)
 {
     return static_cast<const struct eic_handle *>(
-        mock().actualCall("get_motor_1_encoder_handle")
+        mock().actualCall("get_encoder_1_channel_a_handle")
         .returnConstPointerValue()
     );
 }
 
-const struct eic_handle *get_motor_2_encoder_handle(void)
+const struct eic_handle *get_encoder_2_channel_a_handle(void)
 {
     return static_cast<const struct eic_handle *>(
-        mock().actualCall("get_motor_2_encoder_handle")
+        mock().actualCall("get_encoder_2_channel_a_handle")
         .returnConstPointerValue()
     );
 }
@@ -55,18 +55,18 @@ const struct gpio_hal_handler *get_gpio_hal_handler(void)
     );
 }
 
-const struct gpio_handle *get_wheel_encoder_motor_1_b_channel_handle(void)
+const struct gpio_handle *get_encoder_1_channel_b_handle(void)
 {
     return static_cast<const struct gpio_handle *>(
-        mock().actualCall("get_wheel_encoder_motor_1_b_channel_handle")
+        mock().actualCall("get_encoder_1_channel_b_handle")
         .returnConstPointerValue()
     );
 }
 
-const struct gpio_handle *get_wheel_encoder_motor_2_b_channel_handle(void)
+const struct gpio_handle *get_encoder_2_channel_b_handle(void)
 {
     return static_cast<const struct gpio_handle *>(
-        mock().actualCall("get_wheel_encoder_motor_2_b_channel_handle")
+        mock().actualCall("get_encoder_2_channel_b_handle")
         .returnConstPointerValue()
     );
 }
@@ -178,15 +178,15 @@ void init_magnetic_encoders_with_cpputest_checks(void)
 {
     mock().expectOneCall("get_eic_hal_handler")
         .andReturnValue(&mock_eic_handler);
-    mock().expectOneCall("get_motor_1_encoder_handle")
+    mock().expectOneCall("get_encoder_1_channel_a_handle")
         .andReturnValue(&(mock_eic_handles[0]));
-    mock().expectOneCall("get_motor_2_encoder_handle")
+    mock().expectOneCall("get_encoder_2_channel_a_handle")
         .andReturnValue(&(mock_eic_handles[1]));
     mock().expectOneCall("get_gpio_hal_handler")
         .andReturnValue(&mock_gpio_handler);
-    mock().expectOneCall("get_wheel_encoder_motor_1_b_channel_handle")
+    mock().expectOneCall("get_encoder_1_channel_b_handle")
         .andReturnValue(&(mock_gpio_handles[0]));
-    mock().expectOneCall("get_wheel_encoder_motor_2_b_channel_handle")
+    mock().expectOneCall("get_encoder_2_channel_b_handle")
         .andReturnValue(&(mock_gpio_handles[1]));
     init_magnetic_encoders();
 }
