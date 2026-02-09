@@ -172,6 +172,11 @@ TEST(LedTests, InitCallsFunctions)
     init_leds_with_cpputest_checks();
 }
 
+TEST(LedTests, Deinit)
+{
+    deinit_leds();
+}
+
 TEST(LedTests, SetEnabledSetsLeds)
 {
     init_leds_with_cpputest_checks();

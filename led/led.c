@@ -43,7 +43,7 @@ void init_leds(void)
 
 void deinit_leds(void)
 {
-
+    /* nothing to clear/reset */
 }
 
 void set_led_d1_enabled(bool enabled)
