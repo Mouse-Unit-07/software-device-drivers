@@ -230,53 +230,53 @@ TEST(MagneticEncoderTests, InitSetsExternalCallbacks)
 TEST(MagneticEncoderTests, InitResetsTicks)
 {
     init_magnetic_encoders_with_cpputest_checks();
-    wheel_motor_1_encoder_channel_a_isr();
-    wheel_motor_2_encoder_channel_a_isr();
+    encoder_1_isr();
+    encoder_2_isr();
     init_magnetic_encoders_with_cpputest_checks();
-    CHECK(get_wheel_motor_1_encoder_ticks() == 0);
-    CHECK(get_wheel_motor_2_encoder_ticks() == 0);
+    CHECK(get_encoder_1_ticks() == 0);
+    CHECK(get_encoder_2_ticks() == 0);
 }
 
 TEST(MagneticEncoderTests, IsrsChangesTicks)
 {
     init_magnetic_encoders_with_cpputest_checks();
-    wheel_motor_1_encoder_channel_a_isr();
-    wheel_motor_2_encoder_channel_a_isr();
-    CHECK(get_wheel_motor_1_encoder_ticks() != 0);
-    CHECK(get_wheel_motor_2_encoder_ticks() != 0);
+    encoder_1_isr();
+    encoder_2_isr();
+    CHECK(get_encoder_1_ticks() != 0);
+    CHECK(get_encoder_2_ticks() != 0);
 }
 
 TEST(MagneticEncoderTests, ClearEncoderTicksClearsTicks)
 {
     init_magnetic_encoders_with_cpputest_checks();
-    wheel_motor_1_encoder_channel_a_isr();
-    wheel_motor_2_encoder_channel_a_isr();
-    clear_wheel_motor_1_encoder_ticks();
-    clear_wheel_motor_2_encoder_ticks();
-    CHECK(get_wheel_motor_1_encoder_ticks() == 0);
-    CHECK(get_wheel_motor_2_encoder_ticks() == 0);
+    encoder_1_isr();
+    encoder_2_isr();
+    clear_1_encoder_ticks();
+    clear_2_encoder_ticks();
+    CHECK(get_encoder_1_ticks() == 0);
+    CHECK(get_encoder_2_ticks() == 0);
 }
 
 TEST(MagneticEncoderTests, Encoder1IsrChangesTicks)
 {
     init_magnetic_encoders_with_cpputest_checks();
     set_mock_input(ENCODER_1_INDEX, 1);
-    wheel_motor_1_encoder_channel_a_isr();
-    CHECK(get_wheel_motor_1_encoder_ticks() == -1);
-    clear_wheel_motor_1_encoder_ticks();
+    encoder_1_isr();
+    CHECK(get_encoder_1_ticks() == -1);
+    clear_1_encoder_ticks();
     set_mock_input(ENCODER_1_INDEX, 0);
-    wheel_motor_1_encoder_channel_a_isr();
-    CHECK(get_wheel_motor_1_encoder_ticks() == 1);
+    encoder_1_isr();
+    CHECK(get_encoder_1_ticks() == 1);
 }
 
 TEST(MagneticEncoderTests, Encoder2IsrChangesTicks)
 {
     init_magnetic_encoders_with_cpputest_checks();
     set_mock_input(ENCODER_2_INDEX, 1);
-    wheel_motor_2_encoder_channel_a_isr();
-    CHECK(get_wheel_motor_2_encoder_ticks() == 1);
-    clear_wheel_motor_2_encoder_ticks();
+    encoder_2_isr();
+    CHECK(get_encoder_2_ticks() == 1);
+    clear_2_encoder_ticks();
     set_mock_input(ENCODER_2_INDEX, 0);
-    wheel_motor_2_encoder_channel_a_isr();
-    CHECK(get_wheel_motor_2_encoder_ticks() == -1);
+    encoder_2_isr();
+    CHECK(get_encoder_2_ticks() == -1);
 }
