@@ -15,8 +15,8 @@
 /*----------------------------------------------------------------------------*/
 /*                         Public Function Prototypes                         */
 /*----------------------------------------------------------------------------*/
-void init_magnetic_encoder(void);
-void deinit_magnetic_encoder(void);
+void init_magnetic_encoders(void);
+void deinit_magnetic_encoders(void);
 int32_t get_wheel_motor_1_encoder_ticks(void);
 int32_t get_wheel_motor_2_encoder_ticks(void);
 void clear_wheel_motor_1_encoder_ticks(void);
