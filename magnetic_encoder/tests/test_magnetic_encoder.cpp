@@ -23,9 +23,6 @@ extern "C" {
 /*============================================================================*/
 /*                            Mock Implementations                            */
 /*============================================================================*/
-extern "C"
-{
-
 const struct eic_hal_handler *get_eic_hal_handler(void)
 {
     return static_cast<const struct eic_hal_handler *>(
@@ -74,14 +71,9 @@ const struct gpio_handle *get_wheel_encoder_motor_2_b_channel_handle(void)
     );
 }
 
-}
-
 /*============================================================================*/
 /*                             Public Definitions                             */
 /*============================================================================*/
-extern "C"
-{
-
 /* the definition of "struct eic_handle" is hardware specific, so we mock */
 struct eic_handle {
     uint32_t mock_value;
@@ -114,6 +106,7 @@ void dummy_deinit_eic(void) {}
 void mock_set_external_callback(const struct eic_handle *handle, 
                                      void (*callback)(void))
 {
+    CHECK(callback != nullptr);
     for (uint32_t i = 0u; i < EXTERNAL_CALLBACK_COUNT; i++) {
         if (handle == &(mock_eic_handles[i])) {
             mock_external_callback_set_flags[i] = true;
@@ -180,8 +173,6 @@ const struct gpio_hal_handler mock_gpio_handler = {
     dummy_write_gpio_pin,
     dummy_toggle_gpio_pin
 };
-
-}
 
 void init_magnetic_encoders_with_cpputest_checks(void)
 {
