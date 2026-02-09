@@ -115,3 +115,11 @@ TEST(PowerEnablerTests, EnablePowerSetsOutput)
     enable_power();
     CHECK(mock_output);
 }
+
+TEST(PowerEnablerTests, DisablePowerClearsOutput)
+{
+    init_power_enabler_with_cpputest_checks();
+    enable_power();
+    disable_power();
+    CHECK(!mock_output);
+}

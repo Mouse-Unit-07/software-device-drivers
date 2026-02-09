@@ -46,7 +46,7 @@ void enable_power(void)
 
 void disable_power(void)
 {
-
+    gpio_handler->write_gpio_pin(regulators_enable, false);
 }
 
 /*----------------------------------------------------------------------------*/
