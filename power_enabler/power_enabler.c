@@ -36,7 +36,7 @@ void init_power_enabler(void)
 
 void deinit_power_enabler(void)
 {
-
+    /* nothing to clear/reset */
 }
 
 void enable_power(void)
