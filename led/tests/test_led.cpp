@@ -9,6 +9,9 @@
 /*                               Include Files                                */
 /*============================================================================*/
 extern "C" {
+#include <stdint.h>
+#include "gpio_hal.h"
+#include "gpio_hal_config.h"
 #include "led.h"
 }
 
@@ -21,12 +24,126 @@ extern "C" {
 extern "C"
 {
 
+const struct gpio_hal_handler *get_gpio_hal_handler(void)
+{
+    return static_cast<const struct gpio_hal_handler *>(
+        mock().actualCall("get_gpio_hal_handler")
+        .returnConstPointerValue()
+    );
+}
+
+const struct gpio_handle *get_led_d1_handle(void)
+{
+    return static_cast<const struct gpio_handle *>(
+        mock().actualCall("get_led_d1_handle")
+        .returnConstPointerValue()
+    );
+}
+
+const struct gpio_handle *get_led_d2_handle(void)
+{
+    return static_cast<const struct gpio_handle *>(
+        mock().actualCall("get_led_d2_handle")
+        .returnConstPointerValue()
+    );
+}
+
+const struct gpio_handle *get_led_d3_handle(void)
+{
+    return static_cast<const struct gpio_handle *>(
+        mock().actualCall("get_led_d3_handle")
+        .returnConstPointerValue()
+    );
+}
+
+const struct gpio_handle *get_led_d4_handle(void)
+{
+    return static_cast<const struct gpio_handle *>(
+        mock().actualCall("get_led_d4_handle")
+        .returnConstPointerValue()
+    );
+}
+
 }
 
 /*============================================================================*/
-/*                             Private Definitions                            */
+/*                             Public Definitions                             */
 /*============================================================================*/
-/* none */
+
+extern "C"
+{
+
+/* the definition of "struct gpio_handle" is hardware specific, so we mock */
+struct gpio_handle {
+    uint32_t mock_value;
+};
+
+const struct gpio_handle mock_handles[] = {
+    {0u}, {0u}, {0u}, {0u}
+};
+
+bool mock_led_outputs[] = {
+    false, false, false, false
+};
+
+enum led_index
+{
+    LED_1_INDEX = 0,
+    LED_2_INDEX,
+    LED_3_INDEX,
+    LED_4_INDEX,
+    LED_COUNT
+};
+
+void reset_mock_outputs(void)
+{
+    for (uint32_t i = 0u; i < LED_COUNT; i++) {
+        mock_led_outputs[i] = false;
+    }
+}
+
+void set_mock_output(enum led_index index, bool value)
+{
+    mock_led_outputs[index] = value;
+}
+
+void dummy_init_gpio(void) {}
+void dummy_deinit_gpio(void) {}
+bool dummy_read_gpio_pin(const struct gpio_handle *handle) { return true; }
+void mock_write_gpio_pin(const struct gpio_handle *handle, bool value)
+{
+    for (uint32_t i = 0u; i < LED_COUNT; i++) {
+        if (handle == &(mock_handles[i])) {
+            mock_led_outputs[i] = value;
+        }
+    }
+}
+void dummy_toggle_gpio_pin(const struct gpio_handle *handle) {}
+
+const struct gpio_hal_handler mock_handler = {
+    dummy_init_gpio,
+    dummy_deinit_gpio,
+    dummy_read_gpio_pin,
+    mock_write_gpio_pin,
+    dummy_toggle_gpio_pin
+};
+
+}
+
+void init_leds_with_cpputest_checks(void)
+{
+    mock().expectOneCall("get_gpio_hal_handler")
+        .andReturnValue(&mock_handler);
+    mock().expectOneCall("get_led_d1_handle")
+        .andReturnValue(&(mock_handles[0]));
+    mock().expectOneCall("get_led_d2_handle")
+        .andReturnValue(&(mock_handles[1]));
+    mock().expectOneCall("get_led_d3_handle")
+        .andReturnValue(&(mock_handles[2]));
+    mock().expectOneCall("get_led_d4_handle")
+        .andReturnValue(&(mock_handles[3]));
+    init_leds();
+}
 
 /*============================================================================*/
 /*                                 Test Group                                 */
@@ -35,19 +152,40 @@ TEST_GROUP(LedTests)
 {
     void setup() override
     {
-
+        reset_mock_outputs();
+        mock().clear();
     }
 
     void teardown() override
     {
-
+        mock().checkExpectations();
+        mock().clear();
+        reset_mock_outputs();
     }
 };
 
 /*============================================================================*/
 /*                                    Tests                                   */
 /*============================================================================*/
-TEST(LedTests, DeleteMe)
+TEST(LedTests, InitCallsFunctions)
 {
+    init_leds_with_cpputest_checks();
+}
 
+TEST(LedTests, Deinit)
+{
+    deinit_leds();
+}
+
+TEST(LedTests, SetEnabledSetsLeds)
+{
+    init_leds_with_cpputest_checks();
+    set_led_d1_enabled(true);
+    set_led_d2_enabled(true);
+    set_led_d3_enabled(true);
+    set_led_d4_enabled(true);
+    CHECK(mock_led_outputs[LED_1_INDEX] == true);
+    CHECK(mock_led_outputs[LED_2_INDEX] == true);
+    CHECK(mock_led_outputs[LED_3_INDEX] == true);
+    CHECK(mock_led_outputs[LED_4_INDEX] == true);
 }
