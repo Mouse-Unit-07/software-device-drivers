@@ -85,18 +85,18 @@ void clear_2_encoder_ticks(void)
 /*----------------------------------------------------------------------------*/
 void encoder_1_isr(void)
 {
-    if (gpio_handler->read_gpio_pin(encoder_1_channel_b) == 0) {
-        encoder_1_ticks++;
-    } else {
+    if (gpio_handler->read_gpio_pin(encoder_1_channel_b)) {
         encoder_1_ticks--;
+    } else {
+        encoder_1_ticks++;
     }
 }
 
 void encoder_2_isr(void)
 {
-    if (gpio_handler->read_gpio_pin(encoder_2_channel_b) == 0) {
-        encoder_2_ticks--;
-    } else {
+    if (gpio_handler->read_gpio_pin(encoder_2_channel_b)) {
         encoder_2_ticks++;
+    } else {
+        encoder_2_ticks--;
     }
 }
