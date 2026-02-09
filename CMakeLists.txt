@@ -11,7 +11,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     hal_drivers
-    GIT_REPOSITORY https://github.com/Mouse-Unit-07/software-at32uc3l0256-drivers
+    GIT_REPOSITORY git@github.com:Mouse-Unit-07/software-at32uc3l0256-drivers.git
     GIT_TAG main
 )
 FetchContent_MakeAvailable(hal_drivers)
