@@ -15,5 +15,9 @@
 /*----------------------------------------------------------------------------*/
 /*                         Public Function Prototypes                         */
 /*----------------------------------------------------------------------------*/
+void init_power_enabler(void);
+void deinit_power_enabler(void);
+void enable_power(void);
+void disable_power(void);
 
 #endif /* POWER_ENABLER_H_ */
