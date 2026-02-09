@@ -48,22 +48,22 @@ void deinit_leds(void)
 
 void set_led_d1_enabled(bool enabled)
 {
-
+    gpio_handler->write_gpio_pin(led_d1, enabled);
 }
 
 void set_led_d2_enabled(bool enabled)
 {
-
+    gpio_handler->write_gpio_pin(led_d2, enabled);
 }
 
 void set_led_d3_enabled(bool enabled)
 {
-
+    gpio_handler->write_gpio_pin(led_d3, enabled);
 }
 
 void set_led_d4_enabled(bool enabled)
 {
-
+    gpio_handler->write_gpio_pin(led_d4, enabled);
 }
 
 /*----------------------------------------------------------------------------*/
