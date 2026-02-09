@@ -38,7 +38,7 @@ const struct gpio_handle *get_regulators_enable_handle(void)
 }
 
 /*============================================================================*/
-/*                             Private Definitions                            */
+/*                             Public Definitions                             */
 /*============================================================================*/
 /* the definition of "struct gpio_handle" is hardware specific, so we mock */
 struct gpio_handle {
