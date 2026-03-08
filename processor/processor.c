@@ -96,9 +96,9 @@ void reset_timer(void)
     tc_handler->restart_timer();
 }
 
-void get_current_time_ms(void)
+uint32_t get_current_time_ms(void)
 {
-
+    return tc_handler->get_timer_count();
 }
 
 uint32_t get_elapsed_time_ms(uint32_t start_time)
