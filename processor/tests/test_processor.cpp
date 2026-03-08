@@ -367,3 +367,10 @@ TEST(ProcessorTests, StartTimerCallsFunctions)
     start_timer();
     CHECK(restart_timer_called);
 }
+
+TEST(ProcessorTests, ResetTimerCallsFunctions)
+{
+    init_processor_with_cpputest_checks();
+    reset_timer();
+    CHECK(restart_timer_called);
+}

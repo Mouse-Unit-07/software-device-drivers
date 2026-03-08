@@ -93,7 +93,7 @@ void start_timer(void)
 
 void reset_timer(void)
 {
-
+    tc_handler->restart_timer();
 }
 
 void get_current_time_ms(void)
