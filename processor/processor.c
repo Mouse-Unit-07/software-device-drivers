@@ -8,13 +8,25 @@
 /*----------------------------------------------------------------------------*/
 /*                               Include Files                                */
 /*----------------------------------------------------------------------------*/
+#include <stdint.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include "adc_hal.h"
 #include "adc_hal_config.h"
+#include "clock_hal.h"
 #include "clock_hal_config.h"
+#include "eic_hal.h"
 #include "eic_hal_config.h"
+#include "gpio_hal.h"
 #include "gpio_hal_config.h"
+#include "iic_hal.h"
 #include "iic_hal_config.h"
+#include "pwm_hal.h"
 #include "pwm_hal_config.h"
+#include "timer_counter_hal.h"
 #include "timer_counter_hal_config.h"
+#include "usart_hal.h"
+#include "usart_hal_config.h"
 #include "processor.h"
 
 /*----------------------------------------------------------------------------*/
@@ -25,11 +37,74 @@
 /*----------------------------------------------------------------------------*/
 /*                               Private Globals                              */
 /*----------------------------------------------------------------------------*/
-
+static const struct adc_hal_handler *adc_handler = NULL;
+static const struct clock_hal_handler *clock_handler = NULL;
+static const struct eic_hal_handler *eic_handler = NULL;
+static const struct gpio_hal_handler *gpio_handler = NULL;
+static const struct iic_hal_handler *iic_handler = NULL;
+static const struct pwm_hal_handler *pwm_handler = NULL;
+static const struct tc_hal_handler *tc_handler = NULL;
+static const struct usart_hal_handler *usart_handler = NULL;
 
 /*----------------------------------------------------------------------------*/
 /*                         Public Function Definitions                        */
 /*----------------------------------------------------------------------------*/
+void init_processor(void)
+{
+    adc_handler = get_adc_hal_handler();
+    clock_handler = get_clock_hal_handler();
+    eic_handler = get_eic_hal_handler();
+    gpio_handler = get_gpio_hal_handler();
+    iic_handler = get_iic_hal_handler();
+    pwm_handler = get_pwm_hal_handler();
+    tc_handler = get_tc_hal_handler();
+    usart_handler = get_usart_hal_handler();
+
+    /* order of peripheral initialization is AT32UC3L0256 specific */
+    iic_handler->init_iic();
+    eic_handler->init_eic();
+    clock_handler->init_clock();
+    tc_handler->init_timer_counter();
+    usart_handler->init_usart();
+    gpio_handler->init_gpio();
+    adc_handler->init_adc();
+    pwm_handler->init_pwm();
+}
+
+void deinit_processor(void)
+{
+
+}
+
+void delay_ms(uint32_t delay_time)
+{
+
+}
+
+void delay_us(uint32_t delay_time)
+{
+
+}
+
+void start_timer(void)
+{
+
+}
+
+void reset_timer(void)
+{
+
+}
+
+void get_current_time_ms(void)
+{
+
+}
+
+uint32_t get_elapsed_time_ms(uint32_t start_time)
+{
+    return 0;
+}
 
 
 /*----------------------------------------------------------------------------*/
