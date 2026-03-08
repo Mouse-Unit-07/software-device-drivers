@@ -103,7 +103,13 @@ uint32_t get_current_time_ms(void)
 
 uint32_t get_elapsed_time_ms(uint32_t start_time)
 {
-    return 0;
+    uint32_t current_time = tc_handler->get_timer_count();
+
+    if (start_time > current_time) {
+        return 0;
+    } else {
+        return current_time - start_time;
+    }
 }
 
 

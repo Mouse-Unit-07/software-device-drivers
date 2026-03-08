@@ -387,3 +387,10 @@ TEST(ProcessorTests, GetCurrentTimeCallsFunctions)
     get_current_time_ms();
     CHECK(get_timer_count_called);
 }
+
+TEST(ProcessorTests, GetElapsedTimeCallsFunctions)
+{
+    init_processor_with_cpputest_checks();
+    get_elapsed_time_ms(2000);
+    CHECK(get_timer_count_called);
+}
