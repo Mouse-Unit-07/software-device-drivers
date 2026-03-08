@@ -102,7 +102,7 @@ const struct usart_hal_handler *get_usart_hal_handler(void)
 /*============================================================================*/
 /*                             Public Definitions                             */
 /*============================================================================*/
-/* init flags */
+/* test flags */
 bool adc_initialized{false};
 bool clock_initialized{false};
 bool eic_initialized{false};
@@ -111,6 +111,21 @@ bool iic_initialized{false};
 bool pwm_initialized{false};
 bool tc_initialized{false};
 bool usart_initialized{false};
+
+bool delay_ms_called{false};
+
+void reset_test_flags(void)
+{
+    adc_initialized = false;
+    clock_initialized = false;
+    eic_initialized = false;
+    gpio_initialized = false;
+    iic_initialized = false;
+    pwm_initialized = false;
+    tc_initialized = false;
+    usart_initialized = false;
+    delay_ms_called = false;
+}
 
 /* ---------------------------------------------------------------------------*/
 /* ADC mock variables */
@@ -134,13 +149,16 @@ void mock_init_clock(void)
     clock_initialized = true;
 }
 void dummy_deinit_clock(void) {}
-void dummy_delay_ms(uint32_t delay_time) {}
+void mock_delay_ms(uint32_t delay_time)
+{
+    delay_ms_called = true;
+}
 void dummy_delay_us(uint32_t delay_time) {}
 
 const struct clock_hal_handler mock_clock_handler = {
     mock_init_clock,
     dummy_deinit_clock,
-    dummy_delay_ms,
+    mock_delay_ms,
     dummy_delay_us
 };
 
@@ -258,27 +276,9 @@ const struct usart_hal_handler mock_usart_handler = {
     dummy_deinit_usart
 };
 
-/*============================================================================*/
-/*                                 Test Group                                 */
-/*============================================================================*/
-TEST_GROUP(ProcessorTests)
-{
-    void setup() override
-    {
-        mock().clear();
-    }
-
-    void teardown() override
-    {
-        mock().checkExpectations();
-        mock().clear();
-    }
-};
-
-/*============================================================================*/
-/*                                    Tests                                   */
-/*============================================================================*/
-TEST(ProcessorTests, InitCallsFunctions)
+/* ---------------------------------------------------------------------------*/
+/* test helpers */
+void init_processor_with_cpputest_checks(void)
 {
     mock().expectOneCall("get_adc_hal_handler")
         .andReturnValue(&mock_adc_handler);
@@ -307,4 +307,38 @@ TEST(ProcessorTests, InitCallsFunctions)
     CHECK(pwm_initialized);
     CHECK(tc_initialized);
     CHECK(usart_initialized);
+}
+
+/*============================================================================*/
+/*                                 Test Group                                 */
+/*============================================================================*/
+TEST_GROUP(ProcessorTests)
+{
+    void setup() override
+    {
+        reset_test_flags();
+        mock().clear();
+    }
+
+    void teardown() override
+    {
+        mock().checkExpectations();
+        mock().clear();
+        reset_test_flags();
+    }
+};
+
+/*============================================================================*/
+/*                                    Tests                                   */
+/*============================================================================*/
+TEST(ProcessorTests, InitCallsFunctions)
+{
+    init_processor_with_cpputest_checks();
+}
+
+TEST(ProcessorTests, DelayMsCallsFunction)
+{
+    init_processor_with_cpputest_checks();
+    delay_ms(2000);
+    CHECK(delay_ms_called);
 }

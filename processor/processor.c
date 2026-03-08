@@ -78,7 +78,7 @@ void deinit_processor(void)
 
 void delay_ms(uint32_t delay_time)
 {
-
+    clock_handler->delay_ms(delay_time);
 }
 
 void delay_us(uint32_t delay_time)
