@@ -88,7 +88,7 @@ void delay_us(uint32_t delay_time)
 
 void start_timer(void)
 {
-
+    tc_handler->restart_timer();
 }
 
 void reset_timer(void)

@@ -114,6 +114,7 @@ bool usart_initialized{false};
 
 bool delay_ms_called{false};
 bool delay_us_called{false};
+bool restart_timer_called{false};
 
 void reset_test_flags(void)
 {
@@ -125,8 +126,10 @@ void reset_test_flags(void)
     pwm_initialized = false;
     tc_initialized = false;
     usart_initialized = false;
+    
     delay_ms_called = false;
     delay_us_called = false;
+    restart_timer_called = false;
 }
 
 /* ---------------------------------------------------------------------------*/
@@ -259,13 +262,16 @@ void mock_init_tc(void)
 }
 void dummy_deinit_timer_counter(void) {}
 uint32_t dummy_get_timer_count(void) { return 0; }
-void dummy_restart_timer(void) {}
+void mock_restart_timer(void)
+{
+    restart_timer_called = true;
+}
 
 const struct tc_hal_handler mock_tc_handler = {
     mock_init_tc,
     dummy_deinit_timer_counter,
     dummy_get_timer_count,
-    dummy_restart_timer
+    mock_restart_timer
 };
 
 /* ---------------------------------------------------------------------------*/
@@ -353,4 +359,11 @@ TEST(ProcessorTests, DelayUsCallsFunction)
     init_processor_with_cpputest_checks();
     delay_us(2000);
     CHECK(delay_us_called);
+}
+
+TEST(ProcessorTests, StartTimerCallsFunctions)
+{
+    init_processor_with_cpputest_checks();
+    start_timer();
+    CHECK(restart_timer_called);
 }
