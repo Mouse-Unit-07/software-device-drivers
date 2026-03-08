@@ -113,6 +113,7 @@ bool tc_initialized{false};
 bool usart_initialized{false};
 
 bool delay_ms_called{false};
+bool delay_us_called{false};
 
 void reset_test_flags(void)
 {
@@ -125,6 +126,7 @@ void reset_test_flags(void)
     tc_initialized = false;
     usart_initialized = false;
     delay_ms_called = false;
+    delay_us_called = false;
 }
 
 /* ---------------------------------------------------------------------------*/
@@ -153,13 +155,16 @@ void mock_delay_ms(uint32_t delay_time)
 {
     delay_ms_called = true;
 }
-void dummy_delay_us(uint32_t delay_time) {}
+void mock_delay_us(uint32_t delay_time)
+{
+    delay_us_called = true;
+}
 
 const struct clock_hal_handler mock_clock_handler = {
     mock_init_clock,
     dummy_deinit_clock,
     mock_delay_ms,
-    dummy_delay_us
+    mock_delay_us
 };
 
 /* ---------------------------------------------------------------------------*/
@@ -341,4 +346,11 @@ TEST(ProcessorTests, DelayMsCallsFunction)
     init_processor_with_cpputest_checks();
     delay_ms(2000);
     CHECK(delay_ms_called);
+}
+
+TEST(ProcessorTests, DelayUsCallsFunction)
+{
+    init_processor_with_cpputest_checks();
+    delay_us(2000);
+    CHECK(delay_us_called);
 }

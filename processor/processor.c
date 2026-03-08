@@ -83,7 +83,7 @@ void delay_ms(uint32_t delay_time)
 
 void delay_us(uint32_t delay_time)
 {
-
+    clock_handler->delay_us(delay_time);
 }
 
 void start_timer(void)
