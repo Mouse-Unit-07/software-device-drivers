@@ -149,7 +149,7 @@ struct gpio_handle {
 };
 
 const struct gpio_handle mock_gpio_handles[] = {
-    {0u}, {0u}, {0u}, {0u}, {0u}, {0u}
+    {0}, {0}, {0}, {0}, {0}, {0}
 };
 
 bool mock_gpio_values[] = {

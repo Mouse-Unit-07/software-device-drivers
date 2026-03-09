@@ -47,7 +47,7 @@ struct pwm_handle {
     uint32_t mock_value;
 };
 
-const struct pwm_handle mock_vacuum_motor_handle = {0u};
+const struct pwm_handle mock_vacuum_motor_handle = {0};
 
 bool set_duty_cycle_byte_called = false;
 
