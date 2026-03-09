@@ -43,7 +43,10 @@ void init_leds(void)
 
 void deinit_leds(void)
 {
-    /* nothing to clear/reset */
+    gpio_handler->write_gpio_pin(led_d1, false);
+    gpio_handler->write_gpio_pin(led_d2, false);
+    gpio_handler->write_gpio_pin(led_d3, false);
+    gpio_handler->write_gpio_pin(led_d4, false);
 }
 
 void set_led_d1_enabled(bool enabled)
