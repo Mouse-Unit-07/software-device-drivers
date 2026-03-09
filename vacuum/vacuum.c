@@ -35,7 +35,7 @@ void init_vacuum(void)
 
 void deinit_vacuum(void)
 {
-
+    /* nothing to clear/reset */
 }
 
 void set_vacuum_speed(uint8_t speed)

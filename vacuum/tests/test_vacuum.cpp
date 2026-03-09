@@ -70,3 +70,8 @@ TEST(VacuumTests, InitCallsFunctions)
         .andReturnValue(static_cast<const struct pwm_handle *>(nullptr));
     init_vacuum();
 }
+
+TEST(VacuumTests, Deinit)
+{
+    deinit_vacuum();
+}
