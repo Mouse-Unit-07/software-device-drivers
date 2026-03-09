@@ -9,7 +9,9 @@
 /*                               Include Files                                */
 /*----------------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stdbool.h>
 #include <stddef.h>
+#include "gpio_hal.h"
 #include "gpio_hal_config.h"
 #include "pwm_hal.h"
 #include "pwm_hal_config.h"
@@ -49,6 +51,8 @@ void init_wheel_motors(void)
     wheel_driver_motor_1_in2 = get_wheel_driver_motor_1_in2_handle();
     wheel_driver_motor_2_in1 = get_wheel_driver_motor_2_in1_handle();
     wheel_driver_motor_2_in2 = get_wheel_driver_motor_2_in2_handle();
+
+    gpio_handler->write_gpio_pin(wheel_driver_standby, true);
 }
 
 void deinit_wheel_motors(void)
