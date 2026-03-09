@@ -182,6 +182,14 @@ void init_config_pushbutton_with_cpputest_checks(void)
     init_pushbutton();
 }
 
+void pushbutton_isr_with_cpputest_checks(void)
+{
+    set_pushbutton_released();
+    pushbutton_isr();
+    CHECK(delay_ms_called_count == 2);
+    CHECK(get_pushbutton_count() == 1);
+}
+
 /*============================================================================*/
 /*                                 Test Group                                 */
 /*============================================================================*/
@@ -220,8 +228,13 @@ TEST(PushbuttonTests, InitSetsExternalCallback)
 TEST(PushbuttonTests, IsrIncrementsCountWithDebounce)
 {
     init_config_pushbutton_with_cpputest_checks();
-    set_pushbutton_released();
-    pushbutton_isr();
-    CHECK(delay_ms_called_count == 2);
-    CHECK(get_pushbutton_count() == 1);
+    pushbutton_isr_with_cpputest_checks();
+}
+
+TEST(PushbuttonTests, DeinitResetsCount)
+{
+    init_config_pushbutton_with_cpputest_checks();
+    pushbutton_isr_with_cpputest_checks();
+    deinit_pushbutton();
+    CHECK(get_pushbutton_count() == 0);
 }
