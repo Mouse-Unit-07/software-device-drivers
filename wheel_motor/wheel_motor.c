@@ -60,6 +60,11 @@ void deinit_wheel_motors(void)
 
 }
 
+bool is_current_limit_detection_asserted(void)
+{
+    return gpio_handler->read_gpio_pin(wheel_driver_cld);
+}
+
 void set_wheel_motor_1_speed(uint8_t speed)
 {
     pwm_handler->set_pwm_duty_cycle_byte(wheel_motor_1, speed);

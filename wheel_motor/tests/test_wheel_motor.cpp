@@ -289,3 +289,12 @@ TEST(WheelMotorTests, MoveWheelsBackwardFunctionsOutputToPins)
     CHECK(mock_gpio_values[MOTOR_2_IN1_INDEX] == true);
     CHECK(mock_gpio_values[MOTOR_2_IN2_INDEX] == false);
 }
+
+TEST(WheelMotorTests, CurrentLimitDetectionReadsPin)
+{
+    init_wheel_motors_with_cpputest_checks();
+    mock_gpio_values[CLD_INDEX] = true;
+    CHECK(is_current_limit_detection_asserted());
+    mock_gpio_values[CLD_INDEX] = false;
+    CHECK(!is_current_limit_detection_asserted());
+}
