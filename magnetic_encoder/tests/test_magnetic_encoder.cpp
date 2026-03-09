@@ -31,18 +31,18 @@ const struct eic_hal_handler *get_eic_hal_handler(void)
     );
 }
 
-const struct eic_handle *get_encoder_1_channel_a_handle(void)
+const struct eic_handle *get_encoder_1_channel_a_eic_handle(void)
 {
     return static_cast<const struct eic_handle *>(
-        mock().actualCall("get_encoder_1_channel_a_handle")
+        mock().actualCall("get_encoder_1_channel_a_eic_handle")
         .returnConstPointerValue()
     );
 }
 
-const struct eic_handle *get_encoder_2_channel_a_handle(void)
+const struct eic_handle *get_encoder_2_channel_a_eic_handle(void)
 {
     return static_cast<const struct eic_handle *>(
-        mock().actualCall("get_encoder_2_channel_a_handle")
+        mock().actualCall("get_encoder_2_channel_a_eic_handle")
         .returnConstPointerValue()
     );
 }
@@ -178,9 +178,9 @@ void init_magnetic_encoders_with_cpputest_checks(void)
 {
     mock().expectOneCall("get_eic_hal_handler")
         .andReturnValue(&mock_eic_handler);
-    mock().expectOneCall("get_encoder_1_channel_a_handle")
+    mock().expectOneCall("get_encoder_1_channel_a_eic_handle")
         .andReturnValue(&(mock_eic_handles[0]));
-    mock().expectOneCall("get_encoder_2_channel_a_handle")
+    mock().expectOneCall("get_encoder_2_channel_a_eic_handle")
         .andReturnValue(&(mock_eic_handles[1]));
     mock().expectOneCall("get_gpio_hal_handler")
         .andReturnValue(&mock_gpio_handler);

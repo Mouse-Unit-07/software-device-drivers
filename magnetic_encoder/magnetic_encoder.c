@@ -41,8 +41,8 @@ static volatile int32_t encoder_2_ticks = 0;
 void init_magnetic_encoders(void)
 {
     eic_handler = get_eic_hal_handler();
-    encoder_1_channel_a = get_encoder_1_channel_a_handle();
-    encoder_2_channel_a = get_encoder_2_channel_a_handle();
+    encoder_1_channel_a = get_encoder_1_channel_a_eic_handle();
+    encoder_2_channel_a = get_encoder_2_channel_a_eic_handle();
     gpio_handler = get_gpio_hal_handler();
     encoder_1_channel_b = get_encoder_1_channel_b_handle();
     encoder_2_channel_b = get_encoder_2_channel_b_handle();
