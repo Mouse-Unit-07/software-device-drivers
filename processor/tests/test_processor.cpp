@@ -247,13 +247,13 @@ void mock_init_pwm(void)
     pwm_initialized = true;
 }
 void dummy_deinit_pwm(void) {}
-void dummy_set_pwm_duty_cycle_percent(const struct pwm_handle *handle,
-    uint32_t percent) {}
+void dummy_set_pwm_duty_cycle_byte(const struct pwm_handle *handle,
+    uint8_t duty_cycle) {}
 
 const struct pwm_hal_handler mock_pwm_handler = {
     mock_init_pwm,
     dummy_deinit_pwm,
-    dummy_set_pwm_duty_cycle_percent
+    dummy_set_pwm_duty_cycle_byte
 };
 
 /* ---------------------------------------------------------------------------*/
