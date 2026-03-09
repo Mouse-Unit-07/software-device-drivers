@@ -56,7 +56,7 @@ void deinit_pushbutton(void)
 
 uint32_t get_pushbutton_count(void)
 {
-    return 0;
+    return pressed_count;
 }
 
 void clear_pushbutton_count(void)
@@ -71,13 +71,13 @@ void pushbutton_isr(void)
 {
     /* ...provided no OS, and no timer counter or main loop dedicated to */
     /* polling the pushbutton, debouncing w/ hardware is the best choice. */
-    /* for now, we have the below horrible untestable loop and delays: */
+    /* for now, we have the below horrible loop and delays: */
     const uint32_t BOUNCE_TIME_MS = 10u;
 
     clock_handler->delay_ms(BOUNCE_TIME_MS);
 
-    while (gpio_handler->read_gpio_pin(config_pushbutton_gpio) == true) {
-        /* given default LOW from pull-up, wait for release back to LOW */
+    while (gpio_handler->read_gpio_pin(config_pushbutton_gpio) == false) {
+        /* given default HIGH from pull-up, wait for release back to HIGH */
     }
 
     clock_handler->delay_ms(BOUNCE_TIME_MS);
