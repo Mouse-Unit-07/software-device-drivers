@@ -238,3 +238,11 @@ TEST(PushbuttonTests, DeinitResetsCount)
     deinit_pushbutton();
     CHECK(get_pushbutton_count() == 0);
 }
+
+TEST(PushbuttonTests, ClearPushbuttonCountResetsCount)
+{
+    init_config_pushbutton_with_cpputest_checks();
+    pushbutton_isr_with_cpputest_checks();
+    clear_pushbutton_count();
+    CHECK(get_pushbutton_count() == 0);
+}

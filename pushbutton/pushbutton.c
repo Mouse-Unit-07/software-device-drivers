@@ -61,7 +61,7 @@ uint32_t get_pushbutton_count(void)
 
 void clear_pushbutton_count(void)
 {
-
+    pressed_count = 0u;
 }
 
 /*----------------------------------------------------------------------------*/
