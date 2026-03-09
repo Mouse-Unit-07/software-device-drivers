@@ -72,22 +72,26 @@ void set_wheel_motor_2_speed(uint8_t speed)
 
 void set_wheel_motor_1_direction_forward(void)
 {
-
+    gpio_handler->write_gpio_pin(wheel_driver_motor_1_in1, true);
+    gpio_handler->write_gpio_pin(wheel_driver_motor_1_in2, false);
 }
 
 void set_wheel_motor_1_direction_backward(void)
 {
-
+    gpio_handler->write_gpio_pin(wheel_driver_motor_1_in1, false);
+    gpio_handler->write_gpio_pin(wheel_driver_motor_1_in2, true);
 }
 
 void set_wheel_motor_2_direction_forward(void)
 {
-
+    gpio_handler->write_gpio_pin(wheel_driver_motor_2_in1, false);
+    gpio_handler->write_gpio_pin(wheel_driver_motor_2_in2, true);
 }
 
 void set_wheel_motor_2_direction_backward(void)
 {
-
+    gpio_handler->write_gpio_pin(wheel_driver_motor_2_in1, true);
+    gpio_handler->write_gpio_pin(wheel_driver_motor_2_in2, false);
 }
 
 /*----------------------------------------------------------------------------*/

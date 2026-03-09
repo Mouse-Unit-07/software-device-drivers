@@ -202,7 +202,7 @@ const struct gpio_hal_handler mock_gpio_handler = {
 void reset_mock_values(void)
 {
     memset(mock_output_duty_cycles, 0u, sizeof(mock_output_duty_cycles));
-    memset(mock_gpio_values, 0u, sizeof(mock_gpio_values));
+    memset(mock_gpio_values, false, sizeof(mock_gpio_values));
 }
 
 void init_wheel_motors_with_cpputest_checks(void)
@@ -266,4 +266,26 @@ TEST(WheelMotorTests, SetSpeedFunctionsSetDutyCycle)
     CHECK(mock_output_duty_cycles[WHEEL_MOTOR_1_INDEX] == 100u);
     set_wheel_motor_2_speed(200u);
     CHECK(mock_output_duty_cycles[WHEEL_MOTOR_2_INDEX] == 200u);
+}
+
+TEST(WheelMotorTests, MoveWheelsForwardFunctionsOutputToPins)
+{
+    init_wheel_motors_with_cpputest_checks();
+    set_wheel_motor_1_direction_forward();
+    CHECK(mock_gpio_values[MOTOR_1_IN1_INDEX] == true);
+    CHECK(mock_gpio_values[MOTOR_1_IN2_INDEX] == false);
+    set_wheel_motor_2_direction_forward();
+    CHECK(mock_gpio_values[MOTOR_2_IN1_INDEX] == false);
+    CHECK(mock_gpio_values[MOTOR_2_IN2_INDEX] == true);
+}
+
+TEST(WheelMotorTests, MoveWheelsBackwardFunctionsOutputToPins)
+{
+    init_wheel_motors_with_cpputest_checks();
+    set_wheel_motor_1_direction_backward();
+    CHECK(mock_gpio_values[MOTOR_1_IN1_INDEX] == false);
+    CHECK(mock_gpio_values[MOTOR_1_IN2_INDEX] == true);
+    set_wheel_motor_2_direction_backward();
+    CHECK(mock_gpio_values[MOTOR_2_IN1_INDEX] == true);
+    CHECK(mock_gpio_values[MOTOR_2_IN2_INDEX] == false);
 }
