@@ -15,5 +15,8 @@
 /*----------------------------------------------------------------------------*/
 /*                         Public Function Prototypes                         */
 /*----------------------------------------------------------------------------*/
+void init_vacuum(void);
+void deinit_vacuum(void);
+void set_vacuum_speed(uint8_t speed);
 
 #endif /* VACUUM_H_ */
