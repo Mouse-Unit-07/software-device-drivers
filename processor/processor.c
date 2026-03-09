@@ -73,7 +73,7 @@ void init_processor(void)
 
 void deinit_processor(void)
 {
-
+    /* nothing to clear/reset */
 }
 
 void delay_ms(uint32_t delay_time)

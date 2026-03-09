@@ -112,9 +112,12 @@ TEST(PowerEnablerTests, InitCallsFunctions)
     init_power_enabler_with_cpputest_checks();
 }
 
-TEST(PowerEnablerTests, Deinit)
+TEST(PowerEnablerTests, DeinitDisablesPower)
 {
+    init_power_enabler_with_cpputest_checks();
+    enable_power();
     deinit_power_enabler();
+    CHECK(!mock_output);
 }
 
 TEST(PowerEnablerTests, EnablePowerSetsOutput)

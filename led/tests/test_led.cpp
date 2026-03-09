@@ -162,9 +162,18 @@ TEST(LedTests, InitCallsFunctions)
     init_leds_with_cpputest_checks();
 }
 
-TEST(LedTests, Deinit)
+TEST(LedTests, DeinitTurnsOffLeds)
 {
+    init_leds_with_cpputest_checks();
+    set_led_d1_enabled(true);
+    set_led_d2_enabled(true);
+    set_led_d3_enabled(true);
+    set_led_d4_enabled(true);
     deinit_leds();
+    CHECK(mock_led_outputs[LED_1_INDEX] == false);
+    CHECK(mock_led_outputs[LED_2_INDEX] == false);
+    CHECK(mock_led_outputs[LED_3_INDEX] == false);
+    CHECK(mock_led_outputs[LED_4_INDEX] == false);
 }
 
 TEST(LedTests, SetEnabledSetsLeds)
