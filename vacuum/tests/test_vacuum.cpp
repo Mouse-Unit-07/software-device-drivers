@@ -41,12 +41,13 @@ const struct pwm_handle *get_vacuum_motor_handle(void)
 /*============================================================================*/
 /*                             Public Definitions                             */
 /*============================================================================*/
+/* PWM mocks */
 /* the definition of "struct pwm_handle" is hardware specific, so we mock */
 struct pwm_handle {
     uint32_t mock_value;
 };
 
-const struct pwm_handle mock_vacuum_motor_handle = {0u};
+const struct pwm_handle mock_vacuum_motor_handle = {0};
 
 bool set_duty_cycle_byte_called = false;
 
@@ -65,6 +66,8 @@ const struct pwm_hal_handler mock_pwm_handler = {
     mock_set_pwm_duty_cycle_byte
 };
 
+/* -------------------------------------------------------------------------- */
+/* test helpers */
 void reset_test_flags(void)
 {
     set_duty_cycle_byte_called = false;

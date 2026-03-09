@@ -64,13 +64,14 @@ const struct gpio_handle *get_led_d4_handle(void)
 /*============================================================================*/
 /*                             Public Definitions                             */
 /*============================================================================*/
+/* GPIO mocks */
 /* the definition of "struct gpio_handle" is hardware specific, so we mock */
 struct gpio_handle {
     uint32_t mock_value;
 };
 
 const struct gpio_handle mock_handles[] = {
-    {0u}, {0u}, {0u}, {0u}
+    {0}, {0}, {0}, {0}
 };
 
 bool mock_led_outputs[] = {
@@ -85,13 +86,6 @@ enum led_index
     LED_4_INDEX,
     LED_COUNT
 };
-
-void reset_mock_outputs(void)
-{
-    for (uint32_t i = 0u; i < LED_COUNT; i++) {
-        mock_led_outputs[i] = false;
-    }
-}
 
 void set_mock_output(enum led_index index, bool value)
 {
@@ -119,18 +113,25 @@ const struct gpio_hal_handler mock_handler = {
     dummy_toggle_gpio_pin
 };
 
+/* -------------------------------------------------------------------------- */
+/* test helpers */
+void reset_mock_outputs(void)
+{
+    memset(mock_led_outputs, false, sizeof(mock_led_outputs));
+}
+
 void init_leds_with_cpputest_checks(void)
 {
     mock().expectOneCall("get_gpio_hal_handler")
         .andReturnValue(&mock_handler);
     mock().expectOneCall("get_led_d1_handle")
-        .andReturnValue(&(mock_handles[0]));
+        .andReturnValue(&(mock_handles[LED_1_INDEX]));
     mock().expectOneCall("get_led_d2_handle")
-        .andReturnValue(&(mock_handles[1]));
+        .andReturnValue(&(mock_handles[LED_2_INDEX]));
     mock().expectOneCall("get_led_d3_handle")
-        .andReturnValue(&(mock_handles[2]));
+        .andReturnValue(&(mock_handles[LED_3_INDEX]));
     mock().expectOneCall("get_led_d4_handle")
-        .andReturnValue(&(mock_handles[3]));
+        .andReturnValue(&(mock_handles[LED_4_INDEX]));
     init_leds();
 }
 

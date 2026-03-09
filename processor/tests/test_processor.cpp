@@ -134,8 +134,8 @@ void reset_test_flags(void)
     get_timer_count_called = false;
 }
 
-/* ---------------------------------------------------------------------------*/
-/* ADC mock variables */
+/* -------------------------------------------------------------------------- */
+/* ADC mocks */
 void mock_init_adc(void)
 {
     adc_initialized = true;
@@ -149,8 +149,8 @@ const struct adc_hal_handler mock_adc_handler = {
     dummy_read_adc_channel
 };
 
-/* ---------------------------------------------------------------------------*/
-/* clock mock variables */
+/* -------------------------------------------------------------------------- */
+/* clock mocks */
 void mock_init_clock(void)
 {
     clock_initialized = true;
@@ -172,8 +172,8 @@ const struct clock_hal_handler mock_clock_handler = {
     mock_delay_us
 };
 
-/* ---------------------------------------------------------------------------*/
-/* EIC mock variables */
+/* -------------------------------------------------------------------------- */
+/* EIC mocks */
 void mock_init_eic(void)
 {
     /* EIC init must come after IIC init */
@@ -196,8 +196,8 @@ const struct eic_hal_handler mock_eic_handler = {
     dummy_set_external_callback
 };
 
-/* ---------------------------------------------------------------------------*/
-/* GPIO mock variables */
+/* -------------------------------------------------------------------------- */
+/* GPIO mocks */
 void mock_init_gpio(void)
 {
     gpio_initialized = true;
@@ -215,8 +215,8 @@ const struct gpio_hal_handler mock_gpio_handler = {
     dummy_toggle_gpio_pin
 };
 
-/* ---------------------------------------------------------------------------*/
-/* IIC mock variables */
+/* -------------------------------------------------------------------------- */
+/* IIC mocks */
 void mock_init_iic(void)
 {
     /* IIC init must be called first */
@@ -240,8 +240,8 @@ const struct iic_hal_handler mock_iic_handler = {
     dummy_disable_global_interrupts
 };
 
-/* ---------------------------------------------------------------------------*/
-/* PWM mock variables */
+/* -------------------------------------------------------------------------- */
+/* PWM mocks */
 void mock_init_pwm(void)
 {
     pwm_initialized = true;
@@ -256,8 +256,8 @@ const struct pwm_hal_handler mock_pwm_handler = {
     dummy_set_pwm_duty_cycle_byte
 };
 
-/* ---------------------------------------------------------------------------*/
-/* timer counter mock variables */
+/* -------------------------------------------------------------------------- */
+/* timer counter mocks */
 void mock_init_tc(void)
 {
     tc_initialized = true;
@@ -280,8 +280,8 @@ const struct tc_hal_handler mock_tc_handler = {
     mock_restart_timer
 };
 
-/* ---------------------------------------------------------------------------*/
-/* USART mock variables */
+/* -------------------------------------------------------------------------- */
+/* USART mocks */
 void mock_init_usart(void)
 {
     usart_initialized = true;
@@ -293,7 +293,7 @@ const struct usart_hal_handler mock_usart_handler = {
     dummy_deinit_usart
 };
 
-/* ---------------------------------------------------------------------------*/
+/* -------------------------------------------------------------------------- */
 /* test helpers */
 void init_processor_with_cpputest_checks(void)
 {

@@ -39,12 +39,8 @@ const struct gpio_handle *get_battery_comparator_handle(void)
 /*============================================================================*/
 /*                             Public Definitions                             */
 /*============================================================================*/
-static bool mock_pin_value = false;
-
-void reset_all_flags(void)
-{
-    mock_pin_value = false;
-}
+/* GPIO mocks */
+bool mock_pin_value = false;
 
 void set_mock_pin_value(bool value)
 {
@@ -67,6 +63,13 @@ const gpio_hal_handler mock_handler = {
     dummy_write_gpio_pin,
     dummy_toggle_gpio_pin
 };
+
+/* -------------------------------------------------------------------------- */
+/* test helpers */
+void reset_all_flags(void)
+{
+    mock_pin_value = false;
+}
 
 void init_battery_comparator_with_cpputest_checks(void)
 {
@@ -112,8 +115,8 @@ TEST(BatteryComparatorTests, Deinit)
 TEST(BatteryComparatorTests, IsBatteryLowReadsPin)
 {
     init_battery_comparator_with_cpputest_checks();
-    set_mock_pin_value(1);
-    CHECK(is_battery_low() == false);
-    set_mock_pin_value(0);
-    CHECK(is_battery_low() == true);
+    set_mock_pin_value(true);
+    CHECK(!is_battery_low());
+    set_mock_pin_value(false);
+    CHECK(is_battery_low());
 }
