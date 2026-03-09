@@ -353,6 +353,11 @@ TEST(ProcessorTests, InitCallsFunctions)
     init_processor_with_cpputest_checks();
 }
 
+TEST(ProcessorTests, Deinit)
+{
+    deinit_processor();
+}
+
 TEST(ProcessorTests, DelayMsCallsFunction)
 {
     init_processor_with_cpputest_checks();
