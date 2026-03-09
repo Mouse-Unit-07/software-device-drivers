@@ -259,6 +259,22 @@ TEST(WheelMotorTests, InitCallsFunctions)
     init_wheel_motors_with_cpputest_checks();
 }
 
+TEST(WheelMotorTests, DeinitTurnsOffGpioAndPwm)
+{
+    init_wheel_motors_with_cpputest_checks();
+    set_wheel_motor_1_speed(100u);
+    set_wheel_motor_2_speed(100u);
+    set_wheel_motor_1_direction_forward();
+    set_wheel_motor_2_direction_forward();
+    deinit_wheel_motors();
+    CHECK(mock_output_duty_cycles[WHEEL_MOTOR_1_INDEX] == 0u);
+    CHECK(mock_output_duty_cycles[WHEEL_MOTOR_2_INDEX] == 0u);
+    CHECK(mock_gpio_values[MOTOR_1_IN1_INDEX] == false);
+    CHECK(mock_gpio_values[MOTOR_1_IN2_INDEX] == false);
+    CHECK(mock_gpio_values[MOTOR_2_IN1_INDEX] == false);
+    CHECK(mock_gpio_values[MOTOR_2_IN2_INDEX] == false);
+}
+
 TEST(WheelMotorTests, SetSpeedFunctionsSetDutyCycle)
 {
     init_wheel_motors_with_cpputest_checks();

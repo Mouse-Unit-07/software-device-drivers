@@ -57,7 +57,13 @@ void init_wheel_motors(void)
 
 void deinit_wheel_motors(void)
 {
-
+    gpio_handler->write_gpio_pin(wheel_driver_standby, false);
+    pwm_handler->set_pwm_duty_cycle_byte(wheel_motor_1, 0u);
+    pwm_handler->set_pwm_duty_cycle_byte(wheel_motor_2, 0u);
+    gpio_handler->write_gpio_pin(wheel_driver_motor_1_in1, false);
+    gpio_handler->write_gpio_pin(wheel_driver_motor_1_in2, false);
+    gpio_handler->write_gpio_pin(wheel_driver_motor_2_in1, false);
+    gpio_handler->write_gpio_pin(wheel_driver_motor_2_in2, false);
 }
 
 bool is_current_limit_detection_asserted(void)
