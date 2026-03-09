@@ -91,6 +91,21 @@ void reset_test_flags(void)
     external_callback_set = false;
 }
 
+/* -------------------------------------------------------------------------- */
+/* test helpers */
+void init_config_pushbutton_with_cpputest_checks(void)
+{
+    mock().expectOneCall("get_eic_hal_handler")
+        .andReturnValue(&mock_eic_handler);
+    mock().expectOneCall("get_config_pushbutton_eic_handle")
+        .andReturnValue(&mock_config_pushbutton_eic_handle);
+    mock().expectOneCall("get_gpio_hal_handler")
+        .andReturnValue(static_cast<const struct gpio_hal_handler *>(nullptr));
+    mock().expectOneCall("get_config_pushbutton_gpio_handle")
+        .andReturnValue(static_cast<const struct gpio_handle *>(nullptr));
+    init_pushbutton();
+}
+
 /*============================================================================*/
 /*                                 Test Group                                 */
 /*============================================================================*/
@@ -115,14 +130,11 @@ TEST_GROUP(PushbuttonTests)
 /*============================================================================*/
 TEST(PushbuttonTests, InitCallsFunctions)
 {
-    mock().expectOneCall("get_eic_hal_handler")
-        .andReturnValue(&mock_eic_handler);
-    mock().expectOneCall("get_config_pushbutton_eic_handle")
-        .andReturnValue(&mock_config_pushbutton_eic_handle);
-    mock().expectOneCall("get_gpio_hal_handler")
-        .andReturnValue(static_cast<const struct gpio_hal_handler *>(nullptr));
-    mock().expectOneCall("get_config_pushbutton_gpio_handle")
-        .andReturnValue(static_cast<const struct gpio_handle *>(nullptr));
+    init_config_pushbutton_with_cpputest_checks();
+}
 
-    init_pushbutton();
+TEST(PushbuttonTests, InitSetsExternalCallback)
+{
+    init_config_pushbutton_with_cpputest_checks();
+    CHECK(external_callback_set);
 }
