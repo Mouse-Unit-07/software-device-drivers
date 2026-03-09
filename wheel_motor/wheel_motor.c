@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "gpio_hal_config.h"
+#include "pwm_hal.h"
 #include "pwm_hal_config.h"
 #include "wheel_motor.h"
 
@@ -57,12 +58,12 @@ void deinit_wheel_motors(void)
 
 void set_wheel_motor_1_speed(uint8_t speed)
 {
-
+    pwm_handler->set_pwm_duty_cycle_byte(wheel_motor_1, speed);
 }
 
 void set_wheel_motor_2_speed(uint8_t speed)
 {
-
+    pwm_handler->set_pwm_duty_cycle_byte(wheel_motor_2, speed);
 }
 
 void set_wheel_motor_1_direction_forward(void)
