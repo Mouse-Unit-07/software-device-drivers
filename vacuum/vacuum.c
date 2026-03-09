@@ -36,7 +36,7 @@ void init_vacuum(void)
 
 void deinit_vacuum(void)
 {
-    /* nothing to clear/reset */
+    pwm_handler->set_pwm_duty_cycle_byte(vacuum_motor, 0u);
 }
 
 void set_vacuum_speed(uint8_t speed)

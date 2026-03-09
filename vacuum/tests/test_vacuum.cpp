@@ -49,14 +49,14 @@ struct pwm_handle {
 
 const struct pwm_handle mock_vacuum_motor_handle = {0};
 
-bool set_duty_cycle_byte_called = false;
+uint8_t mock_duty_cycle_byte = 0u;
 
 void dummy_init_pwm(void) {}
 void dummy_deinit_pwm(void) {}
 void mock_set_pwm_duty_cycle_byte(const struct pwm_handle *handle, uint8_t duty_cycle)
 {
     if (handle == &mock_vacuum_motor_handle) {
-        set_duty_cycle_byte_called = true;
+        mock_duty_cycle_byte = duty_cycle;
     }
 }
 
@@ -68,9 +68,9 @@ const struct pwm_hal_handler mock_pwm_handler = {
 
 /* -------------------------------------------------------------------------- */
 /* test helpers */
-void reset_test_flags(void)
+void reset_mock_values(void)
 {
-    set_duty_cycle_byte_called = false;
+    mock_duty_cycle_byte = 0u;
 }
 
 void init_vacuum_with_cpputest_checks(void)
@@ -89,7 +89,7 @@ TEST_GROUP(VacuumTests)
 {
     void setup() override
     {
-        reset_test_flags();
+        reset_mock_values();
         mock().clear();
     }
 
@@ -97,7 +97,7 @@ TEST_GROUP(VacuumTests)
     {
         mock().checkExpectations();
         mock().clear();
-        reset_test_flags();
+        reset_mock_values();
     }
 };
 
@@ -109,14 +109,17 @@ TEST(VacuumTests, InitCallsFunctions)
     init_vacuum_with_cpputest_checks();
 }
 
-TEST(VacuumTests, Deinit)
+TEST(VacuumTests, DeinitTurnsOffVacuum)
 {
+    init_vacuum_with_cpputest_checks();
+    set_vacuum_speed(255u);
     deinit_vacuum();
+    CHECK(mock_duty_cycle_byte == 0u);
 }
 
 TEST(VacuumTests, SetSpeedSetsDutyCycle)
 {
     init_vacuum_with_cpputest_checks();
-    set_vacuum_speed(255);
-    CHECK(set_duty_cycle_byte_called);
+    set_vacuum_speed(255u);
+    CHECK(mock_duty_cycle_byte == 255u);
 }
