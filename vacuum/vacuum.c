@@ -10,6 +10,7 @@
 /*----------------------------------------------------------------------------*/
 #include <stdint.h>
 #include <stddef.h>
+#include "pwm_hal.h"
 #include "pwm_hal_config.h"
 #include "vacuum.h"
 
@@ -40,7 +41,7 @@ void deinit_vacuum(void)
 
 void set_vacuum_speed(uint8_t speed)
 {
-
+    pwm_handler->set_pwm_duty_cycle_byte(vacuum_motor, speed);
 }
 
 /*----------------------------------------------------------------------------*/
