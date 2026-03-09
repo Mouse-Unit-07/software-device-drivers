@@ -70,8 +70,7 @@ const struct clock_hal_handler *get_clock_hal_handler(void)
 /*============================================================================*/
 /*                             Public Definitions                             */
 /*============================================================================*/
-/* -------------------------------------------------------------------------- */
-/* eic mock */
+/* eic mocks */
 /* the definition of "struct eic_handle" is hardware specific, so we mock */
 struct eic_handle {
     uint32_t mock_value;
@@ -99,7 +98,7 @@ const struct eic_hal_handler mock_eic_handler = {
 };
 
 /* -------------------------------------------------------------------------- */
-/* gpio mock */
+/* gpio mocks */
 /* the definition of "struct gpio_handle" is hardware specific, so we mock */
 struct gpio_handle {
     uint32_t mock_value;
@@ -136,7 +135,7 @@ void set_pushbutton_released(void)
 }
 
 /* -------------------------------------------------------------------------- */
-/* clock mock */
+/* clock mocks */
 uint32_t delay_ms_called_count = 0u;
 
 void dummy_init_clock(void){}

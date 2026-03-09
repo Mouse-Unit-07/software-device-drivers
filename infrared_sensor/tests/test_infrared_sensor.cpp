@@ -64,13 +64,14 @@ const struct adc_handle *get_ir_sensor_4_handle(void)
 /*============================================================================*/
 /*                             Public Definitions                             */
 /*============================================================================*/
+/* ADC mocks */
 /* the definition of "struct adc_handle" is hardware specific, so we mock */
 struct adc_handle {
     uint32_t mock_value;
 };
 
 const struct adc_handle mock_handles[] = {
-    {0u}, {0u}, {0u}, {0u}
+    {0}, {0}, {0}, {0}
 };
 
 uint32_t mock_sensor_readings[] = {
@@ -85,11 +86,6 @@ enum sensor_index
     IR_SENSOR_4_INDEX,
     SENSOR_COUNT
 };
-
-void reset_mock_reading(void)
-{
-    memset(mock_sensor_readings, 0u, sizeof(mock_sensor_readings));
-}
 
 void set_mock_reading(enum sensor_index index, uint32_t value)
 {
@@ -114,18 +110,25 @@ const struct adc_hal_handler mock_handler = {
     mock_read_adc_channel
 };
 
+/* -------------------------------------------------------------------------- */
+/* test helpers */
+void reset_mock_reading(void)
+{
+    memset(mock_sensor_readings, 0u, sizeof(mock_sensor_readings));
+}
+
 void init_infrared_sensors_with_cpputest_checks(void)
 {
     mock().expectOneCall("get_adc_hal_handler")
         .andReturnValue(&mock_handler);
     mock().expectOneCall("get_ir_sensor_1_handle")
-        .andReturnValue(&(mock_handles[0]));
+        .andReturnValue(&(mock_handles[IR_SENSOR_1_INDEX]));
     mock().expectOneCall("get_ir_sensor_2_handle")
-        .andReturnValue(&(mock_handles[1]));
+        .andReturnValue(&(mock_handles[IR_SENSOR_2_INDEX]));
     mock().expectOneCall("get_ir_sensor_3_handle")
-        .andReturnValue(&(mock_handles[2]));
+        .andReturnValue(&(mock_handles[IR_SENSOR_3_INDEX]));
     mock().expectOneCall("get_ir_sensor_4_handle")
-        .andReturnValue(&(mock_handles[3]));
+        .andReturnValue(&(mock_handles[IR_SENSOR_4_INDEX]));
     init_infrared_sensors();
 }
 

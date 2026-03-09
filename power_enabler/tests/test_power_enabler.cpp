@@ -40,19 +40,15 @@ const struct gpio_handle *get_regulators_enable_handle(void)
 /*============================================================================*/
 /*                             Public Definitions                             */
 /*============================================================================*/
+/* GPIO mocks */
 /* the definition of "struct gpio_handle" is hardware specific, so we mock */
 struct gpio_handle {
     uint32_t mock_value;
 };
 
-const struct gpio_handle mock_handle = {0u};
+const struct gpio_handle mock_handle = {0};
 
 bool mock_output = false;
-
-void reset_mock_output(void)
-{
-    mock_output = false;
-}
 
 void dummy_init_gpio(void) {}
 void dummy_deinit_gpio(void) {}
@@ -72,6 +68,13 @@ const struct gpio_hal_handler mock_handler = {
     mock_write_gpio_pin,
     dummy_toggle_gpio_pin
 };
+
+/* -------------------------------------------------------------------------- */
+/* test helpers */
+void reset_mock_output(void)
+{
+    mock_output = false;
+}
 
 void init_power_enabler_with_cpputest_checks(void)
 {

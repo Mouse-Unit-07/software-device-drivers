@@ -74,13 +74,14 @@ const struct gpio_handle *get_encoder_2_channel_b_handle(void)
 /*============================================================================*/
 /*                             Public Definitions                             */
 /*============================================================================*/
+/* EIC mocks */
 /* the definition of "struct eic_handle" is hardware specific, so we mock */
 struct eic_handle {
     uint32_t mock_value;
 };
 
 const struct eic_handle mock_eic_handles[] = {
-    {0u}, {0u}, {0u}, {0u}
+    {0}, {0}, {0}, {0}
 };
 
 bool mock_external_callback_set_flags[] = {
@@ -93,13 +94,6 @@ enum external_callback_index
     EXTERNAL_CALLBACK_2_INDEX,
     EXTERNAL_CALLBACK_COUNT
 };
-
-void reset_external_callback_set_flags(void)
-{
-    for (uint32_t i = 0u; i < EXTERNAL_CALLBACK_COUNT; i++) {
-        mock_external_callback_set_flags[i] = false;
-    }
-}
 
 void dummy_init_eic(void) {}
 void dummy_deinit_eic(void) {}
@@ -120,13 +114,15 @@ const struct eic_hal_handler mock_eic_handler = {
     mock_set_external_callback
 };
 
+/* -------------------------------------------------------------------------- */
+/* GPIO mocks */
 /* the definition of "struct gpio_handle" is hardware specific, so we mock */
 struct gpio_handle {
     uint32_t mock_value;
 };
 
 const struct gpio_handle mock_gpio_handles[] = {
-    {0u}, {0u}
+    {0}, {0}
 };
 
 bool mock_gpio_inputs[] = {
@@ -139,13 +135,6 @@ enum gpio_index
     ENCODER_2_INDEX,
     GPIO_COUNT
 };
-
-void reset_mock_inputs(void)
-{
-    for (uint32_t i = 0u; i < GPIO_COUNT; i++) {
-        mock_gpio_inputs[i] = false;
-    }
-}
 
 void set_mock_input(enum gpio_index index, bool value)
 {
@@ -174,20 +163,32 @@ const struct gpio_hal_handler mock_gpio_handler = {
     dummy_toggle_gpio_pin
 };
 
+/* -------------------------------------------------------------------------- */
+/* test helpers */
+void reset_external_callback_set_flags(void)
+{
+    memset(mock_external_callback_set_flags, false, sizeof(mock_external_callback_set_flags));
+}
+
+void reset_mock_inputs(void)
+{
+    memset(mock_gpio_inputs, false, sizeof(mock_gpio_inputs));
+}
+
 void init_magnetic_encoders_with_cpputest_checks(void)
 {
     mock().expectOneCall("get_eic_hal_handler")
         .andReturnValue(&mock_eic_handler);
     mock().expectOneCall("get_encoder_1_channel_a_eic_handle")
-        .andReturnValue(&(mock_eic_handles[0]));
+        .andReturnValue(&(mock_eic_handles[EXTERNAL_CALLBACK_1_INDEX]));
     mock().expectOneCall("get_encoder_2_channel_a_eic_handle")
-        .andReturnValue(&(mock_eic_handles[1]));
+        .andReturnValue(&(mock_eic_handles[EXTERNAL_CALLBACK_2_INDEX]));
     mock().expectOneCall("get_gpio_hal_handler")
         .andReturnValue(&mock_gpio_handler);
     mock().expectOneCall("get_encoder_1_channel_b_handle")
-        .andReturnValue(&(mock_gpio_handles[0]));
+        .andReturnValue(&(mock_gpio_handles[ENCODER_1_INDEX]));
     mock().expectOneCall("get_encoder_2_channel_b_handle")
-        .andReturnValue(&(mock_gpio_handles[1]));
+        .andReturnValue(&(mock_gpio_handles[ENCODER_2_INDEX]));
     init_magnetic_encoders();
 }
 
