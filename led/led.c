@@ -22,11 +22,11 @@
 /*----------------------------------------------------------------------------*/
 /*                               Private Globals                              */
 /*----------------------------------------------------------------------------*/
-const struct gpio_hal_handler *gpio_handler = NULL;
-const struct gpio_handle *led_d1 = NULL;
-const struct gpio_handle *led_d2 = NULL;
-const struct gpio_handle *led_d3 = NULL;
-const struct gpio_handle *led_d4 = NULL;
+static const struct gpio_hal_handler *gpio_handler = NULL;
+static const struct gpio_handle *led_d1 = NULL;
+static const struct gpio_handle *led_d2 = NULL;
+static const struct gpio_handle *led_d3 = NULL;
+static const struct gpio_handle *led_d4 = NULL;
 
 
 /*----------------------------------------------------------------------------*/
