@@ -116,6 +116,8 @@ bool delay_ms_called{false};
 bool delay_us_called{false};
 bool restart_timer_called{false};
 bool get_timer_count_called{false};
+bool enable_global_interrupts_called{false};
+bool disable_global_interrupts_called{false};
 
 void reset_test_flags(void)
 {
@@ -132,6 +134,8 @@ void reset_test_flags(void)
     delay_us_called = false;
     restart_timer_called = false;
     get_timer_count_called = false;
+    enable_global_interrupts_called = false;
+    disable_global_interrupts_called = false;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -230,14 +234,21 @@ void mock_init_iic(void)
     iic_initialized = true;
 }
 void dummy_deinit_iic(void) {}
-void dummy_enable_global_interrupts(void) {}
-void dummy_disable_global_interrupts(void) {}
+void mock_enable_global_interrupts(void)
+{
+    enable_global_interrupts_called = true;
+}
+
+void mock_disable_global_interrupts(void)
+{
+    disable_global_interrupts_called = true;
+}
 
 const struct iic_hal_handler mock_iic_handler = {
     mock_init_iic,
     dummy_deinit_iic,
-    dummy_enable_global_interrupts,
-    dummy_disable_global_interrupts
+    mock_enable_global_interrupts,
+    mock_disable_global_interrupts
 };
 
 /* -------------------------------------------------------------------------- */
@@ -324,6 +335,9 @@ void init_processor_with_cpputest_checks(void)
     CHECK(pwm_initialized);
     CHECK(tc_initialized);
     CHECK(usart_initialized);
+
+    CHECK(disable_global_interrupts_called);
+    CHECK(enable_global_interrupts_called);
 }
 
 /*============================================================================*/
