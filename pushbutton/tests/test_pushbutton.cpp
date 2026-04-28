@@ -136,12 +136,14 @@ void set_pushbutton_released(void)
 
 /* -------------------------------------------------------------------------- */
 /* clock mocks */
+uint32_t expected_bounce_time_ms = 200u;
 uint32_t delay_ms_called_count = 0u;
 
 void dummy_init_clock(void){}
 void dummy_deinit_clock(void) {}
 void mock_delay_ms(uint32_t delay_time)
 {
+    CHECK(delay_time == 200u);
     delay_ms_called_count++;
 }
 void dummy_delay_us(uint32_t delay_time){}
