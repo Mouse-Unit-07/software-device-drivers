@@ -72,7 +72,7 @@ void pushbutton_isr(void)
     /* ...provided no OS, and no timer counter or main loop dedicated to */
     /* polling the pushbutton, debouncing w/ hardware is the best choice. */
     /* for now, we have the below horrible loop and delays: */
-    const uint32_t BOUNCE_TIME_MS = 10u;
+    const uint32_t BOUNCE_TIME_MS = 200u;
 
     clock_handler->delay_ms(BOUNCE_TIME_MS);
 
