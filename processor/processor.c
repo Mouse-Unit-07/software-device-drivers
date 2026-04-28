@@ -61,6 +61,8 @@ void init_processor(void)
     usart_handler = get_usart_hal_handler();
 
     /* order of peripheral initialization is AT32UC3L0256 specific */
+    iic_handler->disable_global_interrupts();
+    
     iic_handler->init_iic();
     eic_handler->init_eic();
     clock_handler->init_clock();
@@ -69,6 +71,8 @@ void init_processor(void)
     gpio_handler->init_gpio();
     adc_handler->init_adc();
     pwm_handler->init_pwm();
+
+    iic_handler->enable_global_interrupts();
 }
 
 void deinit_processor(void)
