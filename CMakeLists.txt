@@ -26,8 +26,10 @@ add_subdirectory(pushbutton)
 add_subdirectory(vacuum)
 add_subdirectory(wheel_motor)
 
-if(TARGET_WINDOWS)
-    if(SUPPORTS_WINDOWS)
+option(ENABLE_DEVICE_DRIVER_TESTS "Build/enable mouse simulator tests" OFF)
+
+if(TARGET_WINDOWS AND SUPPORTS_WINDOWS)
+    if(ENABLE_DEVICE_DRIVER_TESTS)
         add_subdirectory(battery_comparator/tests)
         add_subdirectory(infrared_sensor/tests)
         add_subdirectory(led/tests)
