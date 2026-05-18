@@ -13,15 +13,9 @@ if(MOUSE_TARGET STREQUAL "rev_a")
     set(PUSHBUTTON_TEST_SOURCE
         ${CMAKE_CURRENT_SOURCE_DIR}/test_pushbutton_sw_debounce.cpp
     )
-    set(PUSHBUTTON_IMPLEMENTATION_SOURCE
-        ${CMAKE_SOURCE_DIR}/src/pushbutton/pushbutton_sw_debounce.c
-    )
 elseif(MOUSE_TARGET STREQUAL "rev_b")
     set(PUSHBUTTON_TEST_SOURCE
         ${CMAKE_CURRENT_SOURCE_DIR}/test_pushbutton_hw_debounce.cpp
-    )
-    set(PUSHBUTTON_IMPLEMENTATION_SOURCE
-        ${CMAKE_SOURCE_DIR}/src/pushbutton/pushbutton_hw_debounce.c
     )
 else()
     message(FATAL_ERROR "Unsupported MOUSE_TARGET: ${MOUSE_TARGET}")
