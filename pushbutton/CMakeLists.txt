@@ -30,5 +30,5 @@ target_include_directories(pushbutton_lib PUBLIC
 )
 
 target_link_libraries(pushbutton_lib PUBLIC
-    hal_at32uc3l0256_config_lib
+    hal_config_lib
 )
