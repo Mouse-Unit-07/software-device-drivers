@@ -1,5 +1,5 @@
 /*-------------------------------- FILE INFO ---------------------------------*/
-/* Filename           : pushbutton.c                                          */
+/* Filename           : pushbutton_sw_debounce.c                              */
 /*                                                                            */
 /* Implementation for a pushbutton device                                     */
 /*                                                                            */

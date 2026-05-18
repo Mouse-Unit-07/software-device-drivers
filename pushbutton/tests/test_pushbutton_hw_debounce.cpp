@@ -1,7 +1,7 @@
 /*================================ FILE INFO =================================*/
-/* Filename           : test_pushbutton.cpp                                   */
+/* Filename           : test_pushbutton_hw_debounce.cpp                       */
 /*                                                                            */
-/* Test implementation for pushbutton.c                                       */
+/* Test implementation for pushbutton_hw_debounce.c                           */
 /*                                                                            */
 /*============================================================================*/
 
