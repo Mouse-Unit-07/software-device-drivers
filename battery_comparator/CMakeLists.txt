@@ -13,5 +13,5 @@ target_include_directories(battery_comparator_lib PUBLIC
 )
 
 target_link_libraries(battery_comparator_lib PUBLIC
-    hal_at32uc3l0256_config_lib
+    hal_config_lib
 )

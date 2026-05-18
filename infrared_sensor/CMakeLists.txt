@@ -13,5 +13,5 @@ target_include_directories(infrared_sensor_lib PUBLIC
 )
 
 target_link_libraries(infrared_sensor_lib PUBLIC
-    hal_at32uc3l0256_config_lib
+    hal_config_lib
 )
