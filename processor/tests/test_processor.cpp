@@ -8,7 +8,10 @@
 /*============================================================================*/
 /*                               Include Files                                */
 /*============================================================================*/
-extern "C" {
+extern "C"
+{
+
+#include <stdbool.h>
 #include <stdint.h>
 #include "adc_hal.h"
 #include "adc_hal_config.h"
@@ -27,6 +30,7 @@ extern "C" {
 #include "usart_hal.h"
 #include "usart_hal_config.h"
 #include "processor.h"
+
 }
 
 #include <CppUTest/TestHarness.h>
@@ -118,6 +122,10 @@ bool restart_timer_called{false};
 bool get_timer_count_called{false};
 bool enable_global_interrupts_called{false};
 bool disable_global_interrupts_called{false};
+bool is_rx_buffer_empty_called{false};
+bool is_rx_buffer_full_called{false};
+bool pop_rx_buffer_called{false};
+bool clear_rx_buffer_called{false};
 
 void reset_test_flags(void)
 {
@@ -136,6 +144,10 @@ void reset_test_flags(void)
     get_timer_count_called = false;
     enable_global_interrupts_called = false;
     disable_global_interrupts_called = false;
+    is_rx_buffer_empty_called = false;
+    is_rx_buffer_full_called = false;
+    pop_rx_buffer_called = false;
+    clear_rx_buffer_called = false;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -298,10 +310,33 @@ void mock_init_usart(void)
     usart_initialized = true;
 }
 void dummy_deinit_usart(void) {}
+bool mock_is_rx_buffer_empty(void)
+{
+    is_rx_buffer_empty_called = true;
+    return false;
+}
+bool mock_is_rx_buffer_full(void)
+{
+    is_rx_buffer_full_called = true;
+    return false;
+}
+char mock_pop_rx_buffer(void)
+{
+    pop_rx_buffer_called = true;
+    return '\0';
+}
+void mock_clear_rx_buffer(void)
+{
+    clear_rx_buffer_called = true;
+}
 
 const struct usart_hal_handler mock_usart_handler = {
     mock_init_usart,
-    dummy_deinit_usart
+    dummy_deinit_usart,
+    mock_is_rx_buffer_empty,
+    mock_is_rx_buffer_full,
+    mock_pop_rx_buffer,
+    mock_clear_rx_buffer
 };
 
 /* -------------------------------------------------------------------------- */
@@ -412,4 +447,32 @@ TEST(ProcessorTests, GetElapsedTimeCallsFunctions)
     init_processor_with_cpputest_checks();
     get_elapsed_time_ms(2000);
     CHECK(get_timer_count_called);
+}
+
+TEST(ProcessorTests, IsUsartRxBufferEmptyCallsFunctions)
+{
+    init_processor_with_cpputest_checks();
+    is_usart_rx_buffer_empty();
+    CHECK(is_rx_buffer_empty_called);
+}
+
+TEST(ProcessorTests, IsUsartRxBufferFullCallsFunctions)
+{
+    init_processor_with_cpputest_checks();
+    is_usart_rx_buffer_full();
+    CHECK(is_rx_buffer_full_called);
+}
+
+TEST(ProcessorTests, PopUsartRxBufferCallsFunctions)
+{
+    init_processor_with_cpputest_checks();
+    pop_usart_rx_buffer();
+    CHECK(pop_rx_buffer_called);
+}
+
+TEST(ProcessorTests, ClearUsartRxBufferCallsFunctions)
+{
+    init_processor_with_cpputest_checks();
+    clear_usart_rx_buffer();
+    CHECK(clear_rx_buffer_called);
 }

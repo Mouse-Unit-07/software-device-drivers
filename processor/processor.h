@@ -23,5 +23,9 @@ void start_timer(void);
 void reset_timer(void);
 uint32_t get_current_time_ms(void);
 uint32_t get_elapsed_time_ms(uint32_t start_time);
+bool is_usart_rx_buffer_empty(void);
+bool is_usart_rx_buffer_full(void);
+char pop_usart_rx_buffer(void);
+void clear_usart_rx_buffer(void);
 
 #endif /* PROCESSOR_H_ */
