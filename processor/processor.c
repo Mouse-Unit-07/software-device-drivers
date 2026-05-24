@@ -116,6 +116,25 @@ uint32_t get_elapsed_time_ms(uint32_t start_time)
     }
 }
 
+bool is_usart_rx_buffer_empty(void)
+{
+    return usart_handler->is_rx_buffer_empty();
+}
+
+bool is_usart_rx_buffer_full(void)
+{
+    return usart_handler->is_rx_buffer_full();
+}
+
+char pop_usart_rx_buffer(void)
+{
+    return usart_handler->pop_rx_buffer();
+}
+
+void clear_usart_rx_buffer(void)
+{
+    usart_handler->clear_rx_buffer();
+}
 
 /*----------------------------------------------------------------------------*/
 /*                        Private Function Definitions                        */
