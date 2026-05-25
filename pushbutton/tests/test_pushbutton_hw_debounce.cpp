@@ -16,8 +16,6 @@ extern "C"
 #include <stddef.h>
 #include "eic_hal.h"
 #include "eic_hal_config.h"
-#include "gpio_hal.h"
-#include "gpio_hal_config.h"
 #include "pushbutton.h"
 
 }
@@ -40,22 +38,6 @@ const struct eic_handle *get_config_pushbutton_eic_handle(void)
 {
     return static_cast<const struct eic_handle *>(
         mock().actualCall("get_config_pushbutton_eic_handle")
-        .returnConstPointerValue()
-    );
-}
-
-const struct gpio_hal_handler *get_gpio_hal_handler(void)
-{
-    return static_cast<const struct gpio_hal_handler *>(
-        mock().actualCall("get_gpio_hal_handler")
-        .returnConstPointerValue()
-    );
-}
-
-const struct gpio_handle *get_config_pushbutton_gpio_handle(void)
-{
-    return static_cast<const struct gpio_handle *>(
-        mock().actualCall("get_config_pushbutton_gpio_handle")
         .returnConstPointerValue()
     );
 }
@@ -91,52 +73,10 @@ const struct eic_hal_handler mock_eic_handler = {
 };
 
 /* -------------------------------------------------------------------------- */
-/* gpio mocks */
-/* the definition of "struct gpio_handle" is hardware specific, so we mock */
-struct gpio_handle {
-    uint32_t mock_value;
-};
-
-const struct gpio_handle mock_config_pushbutton_gpio_handle = {0};
-
-bool mock_pushbutton_input = false;
-
-void dummy_init_gpio(void) {}
-void dummy_deinit_gpio(void) {}
-bool mock_read_gpio_pin(const struct gpio_handle *handle)
-{
-    bool pin_reading = false;
-    if (handle == &mock_config_pushbutton_gpio_handle) {
-        pin_reading = mock_pushbutton_input;
-    }
-    return pin_reading;
-}
-void dummy_write_gpio_pin(const struct gpio_handle *handle, bool value){}
-void dummy_toggle_gpio_pin(const struct gpio_handle *handle) {}
-
-const struct gpio_hal_handler mock_gpio_handler = {
-    dummy_init_gpio,
-    dummy_deinit_gpio,
-    mock_read_gpio_pin,
-    dummy_write_gpio_pin,
-    dummy_toggle_gpio_pin
-};
-
-void set_pushbutton_released(void)
-{
-    mock_pushbutton_input = true; /* HIGH for release */
-}
-
-/* -------------------------------------------------------------------------- */
 /* test helpers */
 void reset_test_flags(void)
 {
     external_callback_set = false;
-}
-
-void reset_mock_input(void)
-{
-    mock_pushbutton_input = false;
 }
 
 void init_config_pushbutton_with_cpputest_checks(void)
@@ -145,16 +85,11 @@ void init_config_pushbutton_with_cpputest_checks(void)
         .andReturnValue(&mock_eic_handler);
     mock().expectOneCall("get_config_pushbutton_eic_handle")
         .andReturnValue(&mock_config_pushbutton_eic_handle);
-    mock().expectOneCall("get_gpio_hal_handler")
-        .andReturnValue(&mock_gpio_handler);
-    mock().expectOneCall("get_config_pushbutton_gpio_handle")
-        .andReturnValue(&mock_config_pushbutton_gpio_handle);
     init_pushbutton();
 }
 
 void pushbutton_isr_with_cpputest_checks(void)
 {
-    set_pushbutton_released();
     pushbutton_isr();
     CHECK(get_pushbutton_count() == 1);
 }
@@ -167,7 +102,6 @@ TEST_GROUP(PushbuttonTests)
     void setup() override
     {
         reset_test_flags();
-        reset_mock_input();
         mock().clear();
     }
 
@@ -175,7 +109,6 @@ TEST_GROUP(PushbuttonTests)
     {
         mock().checkExpectations();
         mock().clear();
-        reset_mock_input();
         reset_test_flags();
     }
 };
@@ -194,7 +127,7 @@ TEST(PushbuttonTests, InitSetsExternalCallback)
     CHECK(external_callback_set);
 }
 
-TEST(PushbuttonTests, IsrIncrementsCountWithDebounce)
+TEST(PushbuttonTests, IsrIncrementsCount)
 {
     init_config_pushbutton_with_cpputest_checks();
     pushbutton_isr_with_cpputest_checks();
