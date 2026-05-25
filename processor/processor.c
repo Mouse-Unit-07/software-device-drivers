@@ -77,7 +77,14 @@ void init_processor(void)
 
 void deinit_processor(void)
 {
-    /* nothing to clear/reset */
+    pwm_handler->deinit_pwm();
+    adc_handler->deinit_adc();
+    gpio_handler->deinit_gpio();
+    usart_handler->deinit_usart();
+    tc_handler->deinit_timer_counter();
+    clock_handler->deinit_clock();
+    eic_handler->deinit_eic();
+    iic_handler->deinit_iic();
 }
 
 void delay_ms(uint32_t delay_time)

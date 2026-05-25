@@ -156,12 +156,15 @@ void mock_init_adc(void)
 {
     adc_initialized = true;
 }
-void dummy_deinit_adc(void) {}
+void mock_deinit_adc(void)
+{
+    adc_initialized = false;
+}
 uint32_t dummy_read_adc_channel(const struct adc_handle *handle) { return 0; }
 
 const struct adc_hal_handler mock_adc_handler = {
     mock_init_adc,
-    dummy_deinit_adc,
+    mock_deinit_adc,
     dummy_read_adc_channel
 };
 
@@ -171,7 +174,10 @@ void mock_init_clock(void)
 {
     clock_initialized = true;
 }
-void dummy_deinit_clock(void) {}
+void mock_deinit_clock(void)
+{
+    clock_initialized = false;
+}
 void mock_delay_ms(uint32_t delay_time)
 {
     delay_ms_called = true;
@@ -183,7 +189,7 @@ void mock_delay_us(uint32_t delay_time)
 
 const struct clock_hal_handler mock_clock_handler = {
     mock_init_clock,
-    dummy_deinit_clock,
+    mock_deinit_clock,
     mock_delay_ms,
     mock_delay_us
 };
@@ -202,13 +208,16 @@ void mock_init_eic(void)
     CHECK(!usart_initialized);
     eic_initialized = true;
 }
-void dummy_deinit_eic(void) {}
+void mock_deinit_eic(void)
+{
+    eic_initialized = false;
+}
 void dummy_set_external_callback(const struct eic_handle *handle,
     void (*callback)(void)) {}
 
 const struct eic_hal_handler mock_eic_handler = {
     mock_init_eic,
-    dummy_deinit_eic,
+    mock_deinit_eic,
     dummy_set_external_callback
 };
 
@@ -218,14 +227,17 @@ void mock_init_gpio(void)
 {
     gpio_initialized = true;
 }
-void dummy_deinit_gpio(void) {}
+void mock_deinit_gpio(void)
+{
+    gpio_initialized = false;
+}
 bool dummy_read_gpio_pin(const struct gpio_handle *handle) { return true; }
 void dummy_write_gpio_pin(const struct gpio_handle *handle, bool value) {}
 void dummy_toggle_gpio_pin(const struct gpio_handle *handle) {}
 
 const struct gpio_hal_handler mock_gpio_handler = {
     mock_init_gpio,
-    dummy_deinit_gpio,
+    mock_deinit_gpio,
     dummy_read_gpio_pin,
     dummy_write_gpio_pin,
     dummy_toggle_gpio_pin
@@ -245,7 +257,10 @@ void mock_init_iic(void)
     CHECK(!usart_initialized);
     iic_initialized = true;
 }
-void dummy_deinit_iic(void) {}
+void mock_deinit_iic(void)
+{
+    iic_initialized = false;
+}
 void mock_enable_global_interrupts(void)
 {
     enable_global_interrupts_called = true;
@@ -258,7 +273,7 @@ void mock_disable_global_interrupts(void)
 
 const struct iic_hal_handler mock_iic_handler = {
     mock_init_iic,
-    dummy_deinit_iic,
+    mock_deinit_iic,
     mock_enable_global_interrupts,
     mock_disable_global_interrupts
 };
@@ -269,13 +284,16 @@ void mock_init_pwm(void)
 {
     pwm_initialized = true;
 }
-void dummy_deinit_pwm(void) {}
+void mock_deinit_pwm(void)
+{
+    pwm_initialized = false;
+}
 void dummy_set_pwm_duty_cycle_byte(const struct pwm_handle *handle,
     uint8_t duty_cycle) {}
 
 const struct pwm_hal_handler mock_pwm_handler = {
     mock_init_pwm,
-    dummy_deinit_pwm,
+    mock_deinit_pwm,
     dummy_set_pwm_duty_cycle_byte
 };
 
@@ -285,7 +303,10 @@ void mock_init_tc(void)
 {
     tc_initialized = true;
 }
-void dummy_deinit_timer_counter(void) {}
+void mock_deinit_timer_counter(void)
+{
+    tc_initialized = false;
+}
 uint32_t mock_get_timer_count(void)
 {
     get_timer_count_called = true;
@@ -298,7 +319,7 @@ void mock_restart_timer(void)
 
 const struct tc_hal_handler mock_tc_handler = {
     mock_init_tc,
-    dummy_deinit_timer_counter,
+    mock_deinit_timer_counter,
     mock_get_timer_count,
     mock_restart_timer
 };
@@ -309,7 +330,10 @@ void mock_init_usart(void)
 {
     usart_initialized = true;
 }
-void dummy_deinit_usart(void) {}
+void mock_deinit_usart(void)
+{
+    usart_initialized = false;
+}
 bool mock_is_rx_buffer_empty(void)
 {
     is_rx_buffer_empty_called = true;
@@ -332,7 +356,7 @@ void mock_clear_rx_buffer(void)
 
 const struct usart_hal_handler mock_usart_handler = {
     mock_init_usart,
-    dummy_deinit_usart,
+    mock_deinit_usart,
     mock_is_rx_buffer_empty,
     mock_is_rx_buffer_full,
     mock_pop_rx_buffer,
@@ -402,9 +426,18 @@ TEST(ProcessorTests, InitCallsFunctions)
     init_processor_with_cpputest_checks();
 }
 
-TEST(ProcessorTests, Deinit)
+TEST(ProcessorTests, DeinitCallsFunctions)
 {
+    init_processor_with_cpputest_checks();
     deinit_processor();
+    CHECK_FALSE(adc_initialized);
+    CHECK_FALSE(clock_initialized);
+    CHECK_FALSE(eic_initialized);
+    CHECK_FALSE(gpio_initialized);
+    CHECK_FALSE(iic_initialized);
+    CHECK_FALSE(pwm_initialized);
+    CHECK_FALSE(tc_initialized);
+    CHECK_FALSE(usart_initialized);
 }
 
 TEST(ProcessorTests, DelayMsCallsFunction)
