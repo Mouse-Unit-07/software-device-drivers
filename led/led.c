@@ -28,7 +28,6 @@ static const struct gpio_handle *led_d2 = NULL;
 static const struct gpio_handle *led_d3 = NULL;
 static const struct gpio_handle *led_d4 = NULL;
 
-
 /*----------------------------------------------------------------------------*/
 /*                         Public Function Definitions                        */
 /*----------------------------------------------------------------------------*/

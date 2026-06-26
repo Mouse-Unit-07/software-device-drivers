@@ -8,14 +8,17 @@
 /*============================================================================*/
 /*                               Include Files                                */
 /*============================================================================*/
-extern "C" {
-#include <stdint.h>
+extern "C"
+{
+
 #include <stddef.h>
+#include <stdint.h>
 #include "gpio_hal.h"
 #include "gpio_hal_config.h"
 #include "pwm_hal.h"
 #include "pwm_hal_config.h"
 #include "wheel_motor.h"
+
 }
 
 #include <CppUTest/TestHarness.h>
@@ -27,81 +30,61 @@ extern "C" {
 const struct pwm_hal_handler *get_pwm_hal_handler(void)
 {
     return static_cast<const struct pwm_hal_handler *>(
-        mock().actualCall("get_pwm_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_pwm_hal_handler").returnConstPointerValue());
 }
 
 const struct pwm_handle *get_wheel_motor_1_handle(void)
 {
     return static_cast<const struct pwm_handle *>(
-        mock().actualCall("get_wheel_motor_1_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_wheel_motor_1_handle").returnConstPointerValue());
 }
 
 const struct pwm_handle *get_wheel_motor_2_handle(void)
 {
     return static_cast<const struct pwm_handle *>(
-        mock().actualCall("get_wheel_motor_2_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_wheel_motor_2_handle").returnConstPointerValue());
 }
 
 const struct gpio_hal_handler *get_gpio_hal_handler(void)
 {
     return static_cast<const struct gpio_hal_handler *>(
-        mock().actualCall("get_gpio_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_gpio_hal_handler").returnConstPointerValue());
 }
 
 const struct gpio_handle *get_wheel_driver_standby_handle(void)
 {
     return static_cast<const struct gpio_handle *>(
-        mock().actualCall("get_wheel_driver_standby_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_wheel_driver_standby_handle").returnConstPointerValue());
 }
 
 const struct gpio_handle *get_wheel_driver_cld_handle(void)
 {
     return static_cast<const struct gpio_handle *>(
-        mock().actualCall("get_wheel_driver_cld_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_wheel_driver_cld_handle").returnConstPointerValue());
 }
 
 const struct gpio_handle *get_wheel_driver_motor_1_in1_handle(void)
 {
     return static_cast<const struct gpio_handle *>(
-        mock().actualCall("get_wheel_driver_motor_1_in1_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_wheel_driver_motor_1_in1_handle").returnConstPointerValue());
 }
 
 const struct gpio_handle *get_wheel_driver_motor_1_in2_handle(void)
 {
     return static_cast<const struct gpio_handle *>(
-        mock().actualCall("get_wheel_driver_motor_1_in2_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_wheel_driver_motor_1_in2_handle").returnConstPointerValue());
 }
 
 const struct gpio_handle *get_wheel_driver_motor_2_in1_handle(void)
 {
     return static_cast<const struct gpio_handle *>(
-        mock().actualCall("get_wheel_driver_motor_2_in1_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_wheel_driver_motor_2_in1_handle").returnConstPointerValue());
 }
 
 const struct gpio_handle *get_wheel_driver_motor_2_in2_handle(void)
 {
     return static_cast<const struct gpio_handle *>(
-        mock().actualCall("get_wheel_driver_motor_2_in2_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_wheel_driver_motor_2_in2_handle").returnConstPointerValue());
 }
 
 /*============================================================================*/
@@ -136,10 +119,9 @@ void mock_set_pwm_duty_cycle_byte(const struct pwm_handle *handle, uint8_t duty_
 }
 
 const struct pwm_hal_handler mock_pwm_handler = {
-    dummy_init_pwm,
-    dummy_deinit_pwm,
-    mock_set_pwm_duty_cycle_byte
-};
+        dummy_init_pwm,
+        dummy_deinit_pwm,
+        mock_set_pwm_duty_cycle_byte};
 
 /* -------------------------------------------------------------------------- */
 /* GPIO mocks */
@@ -148,13 +130,9 @@ struct gpio_handle {
     uint32_t mock_value;
 };
 
-const struct gpio_handle mock_gpio_handles[] = {
-    {0}, {0}, {0}, {0}, {0}, {0}
-};
+const struct gpio_handle mock_gpio_handles[] = {{0}, {0}, {0}, {0}, {0}, {0}};
 
-bool mock_gpio_values[] = {
-    false, false, false, false, false, false
-};
+bool mock_gpio_values[] = {false, false, false, false, false, false};
 
 enum gpio_index
 {
@@ -190,12 +168,11 @@ void mock_write_gpio_pin(const struct gpio_handle *handle, bool value)
 void dummy_toggle_gpio_pin(const struct gpio_handle *handle) {}
 
 const struct gpio_hal_handler mock_gpio_handler = {
-    dummy_init_gpio,
-    dummy_deinit_gpio,
-    mock_read_gpio_pin,
-    mock_write_gpio_pin,
-    dummy_toggle_gpio_pin
-};
+        dummy_init_gpio,
+        dummy_deinit_gpio,
+        mock_read_gpio_pin,
+        mock_write_gpio_pin,
+        dummy_toggle_gpio_pin};
 
 /* -------------------------------------------------------------------------- */
 /* test helpers */
@@ -207,26 +184,24 @@ void reset_mock_values(void)
 
 void init_wheel_motors_with_cpputest_checks(void)
 {
-    mock().expectOneCall("get_pwm_hal_handler")
-        .andReturnValue(&mock_pwm_handler);
+    mock().expectOneCall("get_pwm_hal_handler").andReturnValue(&mock_pwm_handler);
     mock().expectOneCall("get_wheel_motor_1_handle")
-        .andReturnValue(&(mock_pwm_handles[WHEEL_MOTOR_1_INDEX]));
+            .andReturnValue(&(mock_pwm_handles[WHEEL_MOTOR_1_INDEX]));
     mock().expectOneCall("get_wheel_motor_2_handle")
-        .andReturnValue(&(mock_pwm_handles[WHEEL_MOTOR_2_INDEX]));
-    mock().expectOneCall("get_gpio_hal_handler")
-        .andReturnValue(&mock_gpio_handler);
+            .andReturnValue(&(mock_pwm_handles[WHEEL_MOTOR_2_INDEX]));
+    mock().expectOneCall("get_gpio_hal_handler").andReturnValue(&mock_gpio_handler);
     mock().expectOneCall("get_wheel_driver_standby_handle")
-        .andReturnValue(&(mock_gpio_handles[STANDBY_INDEX]));
+            .andReturnValue(&(mock_gpio_handles[STANDBY_INDEX]));
     mock().expectOneCall("get_wheel_driver_cld_handle")
-        .andReturnValue(&(mock_gpio_handles[CLD_INDEX]));
+            .andReturnValue(&(mock_gpio_handles[CLD_INDEX]));
     mock().expectOneCall("get_wheel_driver_motor_1_in1_handle")
-        .andReturnValue(&(mock_gpio_handles[MOTOR_1_IN1_INDEX]));
+            .andReturnValue(&(mock_gpio_handles[MOTOR_1_IN1_INDEX]));
     mock().expectOneCall("get_wheel_driver_motor_1_in2_handle")
-        .andReturnValue(&(mock_gpio_handles[MOTOR_1_IN2_INDEX]));
+            .andReturnValue(&(mock_gpio_handles[MOTOR_1_IN2_INDEX]));
     mock().expectOneCall("get_wheel_driver_motor_2_in1_handle")
-        .andReturnValue(&(mock_gpio_handles[MOTOR_2_IN1_INDEX]));
+            .andReturnValue(&(mock_gpio_handles[MOTOR_2_IN1_INDEX]));
     mock().expectOneCall("get_wheel_driver_motor_2_in2_handle")
-        .andReturnValue(&(mock_gpio_handles[MOTOR_2_IN2_INDEX]));
+            .andReturnValue(&(mock_gpio_handles[MOTOR_2_IN2_INDEX]));
     init_wheel_motors();
 
     CHECK(mock_gpio_values[STANDBY_INDEX] == true);
