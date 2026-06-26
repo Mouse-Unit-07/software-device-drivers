@@ -10,8 +10,9 @@ add_library(wheel_motor_lib STATIC
 
 target_include_directories(wheel_motor_lib PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
+    $<TARGET_PROPERTY:hal_config_lib,INTERFACE_INCLUDE_DIRECTORIES>
 )
 
-target_link_libraries(wheel_motor_lib PUBLIC
+target_link_libraries(wheel_motor_lib PRIVATE
     hal_config_lib
 )

@@ -10,8 +10,9 @@ add_library(power_enabler_lib STATIC
 
 target_include_directories(power_enabler_lib PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
+    $<TARGET_PROPERTY:hal_config_lib,INTERFACE_INCLUDE_DIRECTORIES>
 )
 
-target_link_libraries(power_enabler_lib PUBLIC
+target_link_libraries(power_enabler_lib PRIVATE
     hal_config_lib
 )
