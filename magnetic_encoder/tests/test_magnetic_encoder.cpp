@@ -8,13 +8,16 @@
 /*============================================================================*/
 /*                               Include Files                                */
 /*============================================================================*/
-extern "C" {
+extern "C"
+{
+
 #include <stdint.h>
 #include "eic_hal.h"
 #include "eic_hal_config.h"
 #include "gpio_hal.h"
 #include "gpio_hal_config.h"
 #include "magnetic_encoder.h"
+
 }
 
 #include <CppUTest/TestHarness.h>
@@ -26,49 +29,37 @@ extern "C" {
 const struct eic_hal_handler *get_eic_hal_handler(void)
 {
     return static_cast<const struct eic_hal_handler *>(
-        mock().actualCall("get_eic_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_eic_hal_handler").returnConstPointerValue());
 }
 
 const struct eic_handle *get_encoder_1_channel_a_eic_handle(void)
 {
     return static_cast<const struct eic_handle *>(
-        mock().actualCall("get_encoder_1_channel_a_eic_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_encoder_1_channel_a_eic_handle").returnConstPointerValue());
 }
 
 const struct eic_handle *get_encoder_2_channel_a_eic_handle(void)
 {
     return static_cast<const struct eic_handle *>(
-        mock().actualCall("get_encoder_2_channel_a_eic_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_encoder_2_channel_a_eic_handle").returnConstPointerValue());
 }
 
 const struct gpio_hal_handler *get_gpio_hal_handler(void)
 {
     return static_cast<const struct gpio_hal_handler *>(
-        mock().actualCall("get_gpio_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_gpio_hal_handler").returnConstPointerValue());
 }
 
 const struct gpio_handle *get_encoder_1_channel_b_handle(void)
 {
     return static_cast<const struct gpio_handle *>(
-        mock().actualCall("get_encoder_1_channel_b_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_encoder_1_channel_b_handle").returnConstPointerValue());
 }
 
 const struct gpio_handle *get_encoder_2_channel_b_handle(void)
 {
     return static_cast<const struct gpio_handle *>(
-        mock().actualCall("get_encoder_2_channel_b_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_encoder_2_channel_b_handle").returnConstPointerValue());
 }
 
 /*============================================================================*/
@@ -80,13 +71,9 @@ struct eic_handle {
     uint32_t mock_value;
 };
 
-const struct eic_handle mock_eic_handles[] = {
-    {0}, {0}, {0}, {0}
-};
+const struct eic_handle mock_eic_handles[] = {{0}, {0}, {0}, {0}};
 
-bool mock_external_callback_set_flags[] = {
-    false, false
-};
+bool mock_external_callback_set_flags[] = {false, false};
 
 enum external_callback_index
 {
@@ -97,11 +84,10 @@ enum external_callback_index
 
 void dummy_init_eic(void) {}
 void dummy_deinit_eic(void) {}
-void mock_set_external_callback(const struct eic_handle *handle, 
-                                     void (*callback)(void))
+void mock_set_external_callback(const struct eic_handle *handle, void (*callback)(void))
 {
     CHECK(callback != nullptr);
-    for (uint32_t i = 0u; i < EXTERNAL_CALLBACK_COUNT; i++) {
+    for (uint32_t i{0u}; i < EXTERNAL_CALLBACK_COUNT; i++) {
         if (handle == &(mock_eic_handles[i])) {
             mock_external_callback_set_flags[i] = true;
         }
@@ -109,10 +95,9 @@ void mock_set_external_callback(const struct eic_handle *handle,
 }
 
 const struct eic_hal_handler mock_eic_handler = {
-    dummy_init_eic,
-    dummy_deinit_eic,
-    mock_set_external_callback
-};
+        dummy_init_eic,
+        dummy_deinit_eic,
+        mock_set_external_callback};
 
 /* -------------------------------------------------------------------------- */
 /* GPIO mocks */
@@ -121,13 +106,9 @@ struct gpio_handle {
     uint32_t mock_value;
 };
 
-const struct gpio_handle mock_gpio_handles[] = {
-    {0}, {0}
-};
+const struct gpio_handle mock_gpio_handles[] = {{0}, {0}};
 
-bool mock_gpio_inputs[] = {
-    false, false
-};
+bool mock_gpio_inputs[] = {false, false};
 
 enum gpio_index
 {
@@ -145,7 +126,7 @@ void dummy_init_gpio(void) {}
 void dummy_deinit_gpio(void) {}
 bool mock_read_gpio_pin(const struct gpio_handle *handle)
 {
-    for (uint32_t i = 0u; i < GPIO_COUNT; i++) {
+    for (uint32_t i{0u}; i < GPIO_COUNT; i++) {
         if (handle == &(mock_gpio_handles[i])) {
             return mock_gpio_inputs[i];
         }
@@ -156,12 +137,11 @@ void dummy_write_gpio_pin(const struct gpio_handle *handle, bool value) {}
 void dummy_toggle_gpio_pin(const struct gpio_handle *handle) {}
 
 const struct gpio_hal_handler mock_gpio_handler = {
-    dummy_init_gpio,
-    dummy_deinit_gpio,
-    mock_read_gpio_pin,
-    dummy_write_gpio_pin,
-    dummy_toggle_gpio_pin
-};
+        dummy_init_gpio,
+        dummy_deinit_gpio,
+        mock_read_gpio_pin,
+        dummy_write_gpio_pin,
+        dummy_toggle_gpio_pin};
 
 /* -------------------------------------------------------------------------- */
 /* test helpers */
@@ -177,18 +157,16 @@ void reset_mock_inputs(void)
 
 void init_magnetic_encoders_with_cpputest_checks(void)
 {
-    mock().expectOneCall("get_eic_hal_handler")
-        .andReturnValue(&mock_eic_handler);
+    mock().expectOneCall("get_eic_hal_handler").andReturnValue(&mock_eic_handler);
     mock().expectOneCall("get_encoder_1_channel_a_eic_handle")
-        .andReturnValue(&(mock_eic_handles[EXTERNAL_CALLBACK_1_INDEX]));
+            .andReturnValue(&(mock_eic_handles[EXTERNAL_CALLBACK_1_INDEX]));
     mock().expectOneCall("get_encoder_2_channel_a_eic_handle")
-        .andReturnValue(&(mock_eic_handles[EXTERNAL_CALLBACK_2_INDEX]));
-    mock().expectOneCall("get_gpio_hal_handler")
-        .andReturnValue(&mock_gpio_handler);
+            .andReturnValue(&(mock_eic_handles[EXTERNAL_CALLBACK_2_INDEX]));
+    mock().expectOneCall("get_gpio_hal_handler").andReturnValue(&mock_gpio_handler);
     mock().expectOneCall("get_encoder_1_channel_b_handle")
-        .andReturnValue(&(mock_gpio_handles[ENCODER_1_INDEX]));
+            .andReturnValue(&(mock_gpio_handles[ENCODER_1_INDEX]));
     mock().expectOneCall("get_encoder_2_channel_b_handle")
-        .andReturnValue(&(mock_gpio_handles[ENCODER_2_INDEX]));
+            .andReturnValue(&(mock_gpio_handles[ENCODER_2_INDEX]));
     init_magnetic_encoders();
 }
 
@@ -234,8 +212,8 @@ TEST(MagneticEncoderTests, InitResetsTicks)
     encoder_1_isr();
     encoder_2_isr();
     init_magnetic_encoders_with_cpputest_checks();
-    CHECK(get_encoder_1_ticks() == 0);
-    CHECK(get_encoder_2_ticks() == 0);
+    LONGS_EQUAL(0, get_encoder_1_ticks());
+    LONGS_EQUAL(0, get_encoder_2_ticks());
 }
 
 TEST(MagneticEncoderTests, DeinitResetsTicks)
@@ -244,8 +222,8 @@ TEST(MagneticEncoderTests, DeinitResetsTicks)
     encoder_1_isr();
     encoder_2_isr();
     deinit_magnetic_encoders();
-    CHECK(get_encoder_1_ticks() == 0);
-    CHECK(get_encoder_2_ticks() == 0);
+    LONGS_EQUAL(0, get_encoder_1_ticks());
+    LONGS_EQUAL(0, get_encoder_2_ticks());
 }
 
 TEST(MagneticEncoderTests, IsrsChangesTicks)
@@ -264,8 +242,8 @@ TEST(MagneticEncoderTests, ClearEncoderTicksClearsTicks)
     encoder_2_isr();
     clear_1_encoder_ticks();
     clear_2_encoder_ticks();
-    CHECK(get_encoder_1_ticks() == 0);
-    CHECK(get_encoder_2_ticks() == 0);
+    LONGS_EQUAL(0, get_encoder_1_ticks());
+    LONGS_EQUAL(0, get_encoder_2_ticks());
 }
 
 TEST(MagneticEncoderTests, Encoder1IsrChangesTicks)
@@ -273,11 +251,11 @@ TEST(MagneticEncoderTests, Encoder1IsrChangesTicks)
     init_magnetic_encoders_with_cpputest_checks();
     set_mock_input(ENCODER_1_INDEX, 1);
     encoder_1_isr();
-    CHECK(get_encoder_1_ticks() == -1);
+    LONGS_EQUAL(-1, get_encoder_1_ticks());
     clear_1_encoder_ticks();
     set_mock_input(ENCODER_1_INDEX, 0);
     encoder_1_isr();
-    CHECK(get_encoder_1_ticks() == 1);
+    LONGS_EQUAL(1, get_encoder_1_ticks());
 }
 
 TEST(MagneticEncoderTests, Encoder2IsrChangesTicks)
@@ -285,9 +263,9 @@ TEST(MagneticEncoderTests, Encoder2IsrChangesTicks)
     init_magnetic_encoders_with_cpputest_checks();
     set_mock_input(ENCODER_2_INDEX, 1);
     encoder_2_isr();
-    CHECK(get_encoder_2_ticks() == 1);
+    LONGS_EQUAL(1, get_encoder_2_ticks());
     clear_2_encoder_ticks();
     set_mock_input(ENCODER_2_INDEX, 0);
     encoder_2_isr();
-    CHECK(get_encoder_2_ticks() == -1);
+    LONGS_EQUAL(-1, get_encoder_2_ticks());
 }

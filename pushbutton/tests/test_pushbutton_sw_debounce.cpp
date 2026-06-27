@@ -8,10 +8,12 @@
 /*============================================================================*/
 /*                               Include Files                                */
 /*============================================================================*/
-extern "C" {
-#include <stdint.h>
+extern "C"
+{
+
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 #include "eic_hal.h"
 #include "eic_hal_config.h"
 #include "gpio_hal.h"
@@ -19,6 +21,7 @@ extern "C" {
 #include "clock_hal.h"
 #include "clock_hal_config.h"
 #include "pushbutton.h"
+
 }
 
 #include <CppUTest/TestHarness.h>
@@ -30,41 +33,31 @@ extern "C" {
 const struct eic_hal_handler *get_eic_hal_handler(void)
 {
     return static_cast<const struct eic_hal_handler *>(
-        mock().actualCall("get_eic_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_eic_hal_handler").returnConstPointerValue());
 }
 
 const struct eic_handle *get_config_pushbutton_eic_handle(void)
 {
     return static_cast<const struct eic_handle *>(
-        mock().actualCall("get_config_pushbutton_eic_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_config_pushbutton_eic_handle").returnConstPointerValue());
 }
 
 const struct gpio_hal_handler *get_gpio_hal_handler(void)
 {
     return static_cast<const struct gpio_hal_handler *>(
-        mock().actualCall("get_gpio_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_gpio_hal_handler").returnConstPointerValue());
 }
 
 const struct gpio_handle *get_config_pushbutton_gpio_handle(void)
 {
     return static_cast<const struct gpio_handle *>(
-        mock().actualCall("get_config_pushbutton_gpio_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_config_pushbutton_gpio_handle").returnConstPointerValue());
 }
 
 const struct clock_hal_handler *get_clock_hal_handler(void)
 {
     return static_cast<const struct clock_hal_handler *>(
-        mock().actualCall("get_clock_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_clock_hal_handler").returnConstPointerValue());
 }
 
 /*============================================================================*/
@@ -82,8 +75,7 @@ bool external_callback_set = false;
 
 void dummy_init_eic(void) {}
 void dummy_deinit_eic(void) {}
-void mock_set_external_callback(const struct eic_handle *handle, 
-                                     void (*callback)(void))
+void mock_set_external_callback(const struct eic_handle *handle, void (*callback)(void))
 {
     CHECK(callback != nullptr);
     if (handle == &mock_config_pushbutton_eic_handle) {
@@ -92,10 +84,9 @@ void mock_set_external_callback(const struct eic_handle *handle,
 }
 
 const struct eic_hal_handler mock_eic_handler = {
-    dummy_init_eic,
-    dummy_deinit_eic,
-    mock_set_external_callback
-};
+        dummy_init_eic,
+        dummy_deinit_eic,
+        mock_set_external_callback};
 
 /* -------------------------------------------------------------------------- */
 /* gpio mocks */
@@ -122,12 +113,11 @@ void dummy_write_gpio_pin(const struct gpio_handle *handle, bool value){}
 void dummy_toggle_gpio_pin(const struct gpio_handle *handle) {}
 
 const struct gpio_hal_handler mock_gpio_handler = {
-    dummy_init_gpio,
-    dummy_deinit_gpio,
-    mock_read_gpio_pin,
-    dummy_write_gpio_pin,
-    dummy_toggle_gpio_pin
-};
+        dummy_init_gpio,
+        dummy_deinit_gpio,
+        mock_read_gpio_pin,
+        dummy_write_gpio_pin,
+        dummy_toggle_gpio_pin};
 
 void set_pushbutton_released(void)
 {
@@ -143,17 +133,16 @@ void dummy_init_clock(void){}
 void dummy_deinit_clock(void) {}
 void mock_delay_ms(uint32_t delay_time)
 {
-    CHECK(delay_time == 200u);
+    LONGS_EQUAL(200u, delay_time);
     delay_ms_called_count++;
 }
 void dummy_delay_us(uint32_t delay_time){}
 
 const struct clock_hal_handler mock_clock_handler = {
-    dummy_init_clock,
-    dummy_deinit_clock,
-    mock_delay_ms,
-    dummy_delay_us
-};
+        dummy_init_clock,
+        dummy_deinit_clock,
+        mock_delay_ms,
+        dummy_delay_us};
 
 /* -------------------------------------------------------------------------- */
 /* test helpers */
@@ -170,16 +159,13 @@ void reset_mock_input(void)
 
 void init_config_pushbutton_with_cpputest_checks(void)
 {
-    mock().expectOneCall("get_eic_hal_handler")
-        .andReturnValue(&mock_eic_handler);
+    mock().expectOneCall("get_eic_hal_handler").andReturnValue(&mock_eic_handler);
     mock().expectOneCall("get_config_pushbutton_eic_handle")
-        .andReturnValue(&mock_config_pushbutton_eic_handle);
-    mock().expectOneCall("get_gpio_hal_handler")
-        .andReturnValue(&mock_gpio_handler);
+            .andReturnValue(&mock_config_pushbutton_eic_handle);
+    mock().expectOneCall("get_gpio_hal_handler").andReturnValue(&mock_gpio_handler);
     mock().expectOneCall("get_config_pushbutton_gpio_handle")
-        .andReturnValue(&mock_config_pushbutton_gpio_handle);
-    mock().expectOneCall("get_clock_hal_handler")
-        .andReturnValue(&mock_clock_handler);
+            .andReturnValue(&mock_config_pushbutton_gpio_handle);
+    mock().expectOneCall("get_clock_hal_handler").andReturnValue(&mock_clock_handler);
     init_pushbutton();
 }
 
@@ -187,8 +173,8 @@ void pushbutton_isr_with_cpputest_checks(void)
 {
     set_pushbutton_released();
     pushbutton_isr();
-    CHECK(delay_ms_called_count == 2);
-    CHECK(get_pushbutton_count() == 1);
+    LONGS_EQUAL(2u, delay_ms_called_count);
+    LONGS_EQUAL(1u, get_pushbutton_count());
 }
 
 /*============================================================================*/
@@ -237,7 +223,7 @@ TEST(PushbuttonTests, DeinitResetsCount)
     init_config_pushbutton_with_cpputest_checks();
     pushbutton_isr_with_cpputest_checks();
     deinit_pushbutton();
-    CHECK(get_pushbutton_count() == 0);
+    LONGS_EQUAL(0u, get_pushbutton_count());
 }
 
 TEST(PushbuttonTests, ClearPushbuttonCountResetsCount)
@@ -245,5 +231,5 @@ TEST(PushbuttonTests, ClearPushbuttonCountResetsCount)
     init_config_pushbutton_with_cpputest_checks();
     pushbutton_isr_with_cpputest_checks();
     clear_pushbutton_count();
-    CHECK(get_pushbutton_count() == 0);
+    LONGS_EQUAL(0u, get_pushbutton_count());
 }

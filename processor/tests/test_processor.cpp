@@ -42,65 +42,49 @@ extern "C"
 const struct adc_hal_handler *get_adc_hal_handler(void)
 {
     return static_cast<const struct adc_hal_handler *>(
-        mock().actualCall("get_adc_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_adc_hal_handler").returnConstPointerValue());
 }
 
 const struct clock_hal_handler *get_clock_hal_handler(void)
 {
     return static_cast<const struct clock_hal_handler *>(
-        mock().actualCall("get_clock_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_clock_hal_handler").returnConstPointerValue());
 }
 
 const struct eic_hal_handler *get_eic_hal_handler(void)
 {
     return static_cast<const struct eic_hal_handler *>(
-        mock().actualCall("get_eic_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_eic_hal_handler").returnConstPointerValue());
 }
 
 const struct gpio_hal_handler *get_gpio_hal_handler(void)
 {
     return static_cast<const struct gpio_hal_handler *>(
-        mock().actualCall("get_gpio_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_gpio_hal_handler").returnConstPointerValue());
 }
 
 const struct iic_hal_handler *get_iic_hal_handler(void)
 {
     return static_cast<const struct iic_hal_handler *>(
-        mock().actualCall("get_iic_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_iic_hal_handler").returnConstPointerValue());
 }
 
 const struct pwm_hal_handler *get_pwm_hal_handler(void)
 {
     return static_cast<const struct pwm_hal_handler *>(
-        mock().actualCall("get_pwm_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_pwm_hal_handler").returnConstPointerValue());
 }
 
 const struct tc_hal_handler *get_tc_hal_handler(void)
 {
     return static_cast<const struct tc_hal_handler *>(
-        mock().actualCall("get_tc_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_tc_hal_handler").returnConstPointerValue());
 }
 
 const struct usart_hal_handler *get_usart_hal_handler(void)
 {
     return static_cast<const struct usart_hal_handler *>(
-        mock().actualCall("get_usart_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_usart_hal_handler").returnConstPointerValue());
 }
 
 /*============================================================================*/
@@ -137,7 +121,7 @@ void reset_test_flags(void)
     pwm_initialized = false;
     tc_initialized = false;
     usart_initialized = false;
-    
+
     delay_ms_called = false;
     delay_us_called = false;
     restart_timer_called = false;
@@ -163,10 +147,9 @@ void mock_deinit_adc(void)
 uint32_t dummy_read_adc_channel(const struct adc_handle *handle) { return 0; }
 
 const struct adc_hal_handler mock_adc_handler = {
-    mock_init_adc,
-    mock_deinit_adc,
-    dummy_read_adc_channel
-};
+        mock_init_adc,
+        mock_deinit_adc,
+        dummy_read_adc_channel};
 
 /* -------------------------------------------------------------------------- */
 /* clock mocks */
@@ -188,11 +171,10 @@ void mock_delay_us(uint32_t delay_time)
 }
 
 const struct clock_hal_handler mock_clock_handler = {
-    mock_init_clock,
-    mock_deinit_clock,
-    mock_delay_ms,
-    mock_delay_us
-};
+        mock_init_clock,
+        mock_deinit_clock,
+        mock_delay_ms,
+        mock_delay_us};
 
 /* -------------------------------------------------------------------------- */
 /* EIC mocks */
@@ -212,14 +194,12 @@ void mock_deinit_eic(void)
 {
     eic_initialized = false;
 }
-void dummy_set_external_callback(const struct eic_handle *handle,
-    void (*callback)(void)) {}
+void dummy_set_external_callback(const struct eic_handle *handle, void (*callback)(void)) {}
 
 const struct eic_hal_handler mock_eic_handler = {
-    mock_init_eic,
-    mock_deinit_eic,
-    dummy_set_external_callback
-};
+        mock_init_eic,
+        mock_deinit_eic,
+        dummy_set_external_callback};
 
 /* -------------------------------------------------------------------------- */
 /* GPIO mocks */
@@ -236,12 +216,11 @@ void dummy_write_gpio_pin(const struct gpio_handle *handle, bool value) {}
 void dummy_toggle_gpio_pin(const struct gpio_handle *handle) {}
 
 const struct gpio_hal_handler mock_gpio_handler = {
-    mock_init_gpio,
-    mock_deinit_gpio,
-    dummy_read_gpio_pin,
-    dummy_write_gpio_pin,
-    dummy_toggle_gpio_pin
-};
+        mock_init_gpio,
+        mock_deinit_gpio,
+        dummy_read_gpio_pin,
+        dummy_write_gpio_pin,
+        dummy_toggle_gpio_pin};
 
 /* -------------------------------------------------------------------------- */
 /* IIC mocks */
@@ -272,11 +251,10 @@ void mock_disable_global_interrupts(void)
 }
 
 const struct iic_hal_handler mock_iic_handler = {
-    mock_init_iic,
-    mock_deinit_iic,
-    mock_enable_global_interrupts,
-    mock_disable_global_interrupts
-};
+        mock_init_iic,
+        mock_deinit_iic,
+        mock_enable_global_interrupts,
+        mock_disable_global_interrupts};
 
 /* -------------------------------------------------------------------------- */
 /* PWM mocks */
@@ -288,14 +266,12 @@ void mock_deinit_pwm(void)
 {
     pwm_initialized = false;
 }
-void dummy_set_pwm_duty_cycle_byte(const struct pwm_handle *handle,
-    uint8_t duty_cycle) {}
+void dummy_set_pwm_duty_cycle_byte(const struct pwm_handle *handle, uint8_t duty_cycle) {}
 
 const struct pwm_hal_handler mock_pwm_handler = {
-    mock_init_pwm,
-    mock_deinit_pwm,
-    dummy_set_pwm_duty_cycle_byte
-};
+        mock_init_pwm,
+        mock_deinit_pwm,
+        dummy_set_pwm_duty_cycle_byte};
 
 /* -------------------------------------------------------------------------- */
 /* timer counter mocks */
@@ -318,11 +294,10 @@ void mock_restart_timer(void)
 }
 
 const struct tc_hal_handler mock_tc_handler = {
-    mock_init_tc,
-    mock_deinit_timer_counter,
-    mock_get_timer_count,
-    mock_restart_timer
-};
+        mock_init_tc,
+        mock_deinit_timer_counter,
+        mock_get_timer_count,
+        mock_restart_timer};
 
 /* -------------------------------------------------------------------------- */
 /* USART mocks */
@@ -355,34 +330,25 @@ void mock_clear_rx_buffer(void)
 }
 
 const struct usart_hal_handler mock_usart_handler = {
-    mock_init_usart,
-    mock_deinit_usart,
-    mock_is_rx_buffer_empty,
-    mock_is_rx_buffer_full,
-    mock_pop_rx_buffer,
-    mock_clear_rx_buffer
-};
+        mock_init_usart,
+        mock_deinit_usart,
+        mock_is_rx_buffer_empty,
+        mock_is_rx_buffer_full,
+        mock_pop_rx_buffer,
+        mock_clear_rx_buffer};
 
 /* -------------------------------------------------------------------------- */
 /* test helpers */
 void init_processor_with_cpputest_checks(void)
 {
-    mock().expectOneCall("get_adc_hal_handler")
-        .andReturnValue(&mock_adc_handler);
-    mock().expectOneCall("get_clock_hal_handler")
-        .andReturnValue(&mock_clock_handler);
-    mock().expectOneCall("get_eic_hal_handler")
-        .andReturnValue(&mock_eic_handler);
-    mock().expectOneCall("get_gpio_hal_handler")
-        .andReturnValue(&mock_gpio_handler);
-    mock().expectOneCall("get_iic_hal_handler")
-        .andReturnValue(&mock_iic_handler);
-    mock().expectOneCall("get_pwm_hal_handler")
-        .andReturnValue(&mock_pwm_handler);
-    mock().expectOneCall("get_tc_hal_handler")
-        .andReturnValue(&mock_tc_handler);
-    mock().expectOneCall("get_usart_hal_handler")
-        .andReturnValue(&mock_usart_handler);
+    mock().expectOneCall("get_adc_hal_handler").andReturnValue(&mock_adc_handler);
+    mock().expectOneCall("get_clock_hal_handler").andReturnValue(&mock_clock_handler);
+    mock().expectOneCall("get_eic_hal_handler").andReturnValue(&mock_eic_handler);
+    mock().expectOneCall("get_gpio_hal_handler").andReturnValue(&mock_gpio_handler);
+    mock().expectOneCall("get_iic_hal_handler").andReturnValue(&mock_iic_handler);
+    mock().expectOneCall("get_pwm_hal_handler").andReturnValue(&mock_pwm_handler);
+    mock().expectOneCall("get_tc_hal_handler").andReturnValue(&mock_tc_handler);
+    mock().expectOneCall("get_usart_hal_handler").andReturnValue(&mock_usart_handler);
 
     init_processor();
 

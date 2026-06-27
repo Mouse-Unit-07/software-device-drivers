@@ -8,9 +8,9 @@
 /*----------------------------------------------------------------------------*/
 /*                               Include Files                                */
 /*----------------------------------------------------------------------------*/
-#include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 #include "adc_hal.h"
 #include "adc_hal_config.h"
 #include "clock_hal.h"
@@ -62,7 +62,7 @@ void init_processor(void)
 
     /* order of peripheral initialization is AT32UC3L0256 specific */
     iic_handler->disable_global_interrupts();
-    
+
     iic_handler->init_iic();
     eic_handler->init_eic();
     clock_handler->init_clock();

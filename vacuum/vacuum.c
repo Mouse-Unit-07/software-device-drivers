@@ -8,8 +8,8 @@
 /*----------------------------------------------------------------------------*/
 /*                               Include Files                                */
 /*----------------------------------------------------------------------------*/
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 #include "pwm_hal.h"
 #include "pwm_hal_config.h"
 #include "vacuum.h"

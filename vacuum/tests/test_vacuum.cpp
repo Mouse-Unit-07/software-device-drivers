@@ -8,12 +8,15 @@
 /*============================================================================*/
 /*                               Include Files                                */
 /*============================================================================*/
-extern "C" {
-#include <stdint.h>
+extern "C"
+{
+
 #include <stddef.h>
+#include <stdint.h>
 #include "pwm_hal.h"
 #include "pwm_hal_config.h"
 #include "vacuum.h"
+
 }
 
 #include <CppUTest/TestHarness.h>
@@ -25,17 +28,13 @@ extern "C" {
 const struct pwm_hal_handler *get_pwm_hal_handler(void)
 {
     return static_cast<const struct pwm_hal_handler *>(
-        mock().actualCall("get_pwm_hal_handler")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_pwm_hal_handler").returnConstPointerValue());
 }
 
 const struct pwm_handle *get_vacuum_motor_handle(void)
 {
     return static_cast<const struct pwm_handle *>(
-        mock().actualCall("get_vacuum_motor_handle")
-        .returnConstPointerValue()
-    );
+            mock().actualCall("get_vacuum_motor_handle").returnConstPointerValue());
 }
 
 /*============================================================================*/
@@ -61,10 +60,9 @@ void mock_set_pwm_duty_cycle_byte(const struct pwm_handle *handle, uint8_t duty_
 }
 
 const struct pwm_hal_handler mock_pwm_handler = {
-    dummy_init_pwm,
-    dummy_deinit_pwm,
-    mock_set_pwm_duty_cycle_byte
-};
+        dummy_init_pwm,
+        dummy_deinit_pwm,
+        mock_set_pwm_duty_cycle_byte};
 
 /* -------------------------------------------------------------------------- */
 /* test helpers */
@@ -75,10 +73,8 @@ void reset_mock_values(void)
 
 void init_vacuum_with_cpputest_checks(void)
 {
-    mock().expectOneCall("get_pwm_hal_handler")
-        .andReturnValue(&mock_pwm_handler);
-    mock().expectOneCall("get_vacuum_motor_handle")
-        .andReturnValue(&mock_vacuum_motor_handle);
+    mock().expectOneCall("get_pwm_hal_handler").andReturnValue(&mock_pwm_handler);
+    mock().expectOneCall("get_vacuum_motor_handle").andReturnValue(&mock_vacuum_motor_handle);
     init_vacuum();
 }
 
@@ -114,12 +110,12 @@ TEST(VacuumTests, DeinitTurnsOffVacuum)
     init_vacuum_with_cpputest_checks();
     set_vacuum_speed(255u);
     deinit_vacuum();
-    CHECK(mock_duty_cycle_byte == 0u);
+    LONGS_EQUAL(0u, mock_duty_cycle_byte);
 }
 
 TEST(VacuumTests, SetSpeedSetsDutyCycle)
 {
     init_vacuum_with_cpputest_checks();
     set_vacuum_speed(255u);
-    CHECK(mock_duty_cycle_byte == 255u);
+    LONGS_EQUAL(255u, mock_duty_cycle_byte);
 }

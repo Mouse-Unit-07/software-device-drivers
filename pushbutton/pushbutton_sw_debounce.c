@@ -8,9 +8,9 @@
 /*----------------------------------------------------------------------------*/
 /*                               Include Files                                */
 /*----------------------------------------------------------------------------*/
-#include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 #include "eic_hal.h"
 #include "eic_hal_config.h"
 #include "gpio_hal.h"

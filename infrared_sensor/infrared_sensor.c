@@ -8,8 +8,8 @@
 /*----------------------------------------------------------------------------*/
 /*                               Include Files                                */
 /*----------------------------------------------------------------------------*/
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 #include "adc_hal.h"
 #include "adc_hal_config.h"
 #include "infrared_sensor.h"
