@@ -111,7 +111,7 @@ void dummy_init_pwm(void) {}
 void dummy_deinit_pwm(void) {}
 void mock_set_pwm_duty_cycle_byte(const struct pwm_handle *handle, uint8_t duty_cycle)
 {
-    for (uint32_t i = 0u; i < WHEEL_MOTOR_COUNT; i++) {
+    for (uint32_t i{0u}; i < WHEEL_MOTOR_COUNT; i++) {
         if (handle == &(mock_pwm_handles[i])) {
             mock_output_duty_cycles[i] = duty_cycle;
         }
@@ -150,7 +150,7 @@ void dummy_deinit_gpio(void) {}
 bool mock_read_gpio_pin(const struct gpio_handle *handle)
 {
     bool pin_reading = false;
-    for (uint32_t i = 0u; i < GPIO_COUNT; i++) {
+    for (uint32_t i{0u}; i < GPIO_COUNT; i++) {
         if (handle == &(mock_gpio_handles[i])) {
             pin_reading = mock_gpio_values[i];
         }
@@ -159,7 +159,7 @@ bool mock_read_gpio_pin(const struct gpio_handle *handle)
 }
 void mock_write_gpio_pin(const struct gpio_handle *handle, bool value)
 {
-    for (uint32_t i = 0u; i < GPIO_COUNT; i++) {
+    for (uint32_t i{0u}; i < GPIO_COUNT; i++) {
         if (handle == &(mock_gpio_handles[i])) {
             mock_gpio_values[i] = value;
         }
@@ -204,7 +204,7 @@ void init_wheel_motors_with_cpputest_checks(void)
             .andReturnValue(&(mock_gpio_handles[MOTOR_2_IN2_INDEX]));
     init_wheel_motors();
 
-    CHECK(mock_gpio_values[STANDBY_INDEX] == true);
+    CHECK_TRUE(mock_gpio_values[STANDBY_INDEX]);
 }
 
 /*============================================================================*/
@@ -242,50 +242,50 @@ TEST(WheelMotorTests, DeinitTurnsOffGpioAndPwm)
     set_wheel_motor_1_direction_forward();
     set_wheel_motor_2_direction_forward();
     deinit_wheel_motors();
-    CHECK(mock_output_duty_cycles[WHEEL_MOTOR_1_INDEX] == 0u);
-    CHECK(mock_output_duty_cycles[WHEEL_MOTOR_2_INDEX] == 0u);
-    CHECK(mock_gpio_values[MOTOR_1_IN1_INDEX] == false);
-    CHECK(mock_gpio_values[MOTOR_1_IN2_INDEX] == false);
-    CHECK(mock_gpio_values[MOTOR_2_IN1_INDEX] == false);
-    CHECK(mock_gpio_values[MOTOR_2_IN2_INDEX] == false);
+    LONGS_EQUAL(0u, mock_output_duty_cycles[WHEEL_MOTOR_1_INDEX]);
+    LONGS_EQUAL(0u, mock_output_duty_cycles[WHEEL_MOTOR_2_INDEX]);
+    CHECK_FALSE(mock_gpio_values[MOTOR_1_IN1_INDEX]);
+    CHECK_FALSE(mock_gpio_values[MOTOR_1_IN2_INDEX]);
+    CHECK_FALSE(mock_gpio_values[MOTOR_2_IN1_INDEX]);
+    CHECK_FALSE(mock_gpio_values[MOTOR_2_IN2_INDEX]);
 }
 
 TEST(WheelMotorTests, SetSpeedFunctionsSetDutyCycle)
 {
     init_wheel_motors_with_cpputest_checks();
     set_wheel_motor_1_speed(100u);
-    CHECK(mock_output_duty_cycles[WHEEL_MOTOR_1_INDEX] == 100u);
     set_wheel_motor_2_speed(200u);
-    CHECK(mock_output_duty_cycles[WHEEL_MOTOR_2_INDEX] == 200u);
+    LONGS_EQUAL(100u, mock_output_duty_cycles[WHEEL_MOTOR_1_INDEX]);
+    LONGS_EQUAL(200u, mock_output_duty_cycles[WHEEL_MOTOR_2_INDEX]);
 }
 
 TEST(WheelMotorTests, MoveWheelsForwardFunctionsOutputToPins)
 {
     init_wheel_motors_with_cpputest_checks();
     set_wheel_motor_1_direction_forward();
-    CHECK(mock_gpio_values[MOTOR_1_IN1_INDEX] == true);
-    CHECK(mock_gpio_values[MOTOR_1_IN2_INDEX] == false);
+    CHECK_TRUE(mock_gpio_values[MOTOR_1_IN1_INDEX]);
+    CHECK_FALSE(mock_gpio_values[MOTOR_1_IN2_INDEX]);
     set_wheel_motor_2_direction_forward();
-    CHECK(mock_gpio_values[MOTOR_2_IN1_INDEX] == false);
-    CHECK(mock_gpio_values[MOTOR_2_IN2_INDEX] == true);
+    CHECK_FALSE(mock_gpio_values[MOTOR_2_IN1_INDEX]);
+    CHECK_TRUE(mock_gpio_values[MOTOR_2_IN2_INDEX]);
 }
 
 TEST(WheelMotorTests, MoveWheelsBackwardFunctionsOutputToPins)
 {
     init_wheel_motors_with_cpputest_checks();
     set_wheel_motor_1_direction_backward();
-    CHECK(mock_gpio_values[MOTOR_1_IN1_INDEX] == false);
-    CHECK(mock_gpio_values[MOTOR_1_IN2_INDEX] == true);
+    CHECK_FALSE(mock_gpio_values[MOTOR_1_IN1_INDEX]);
+    CHECK_TRUE(mock_gpio_values[MOTOR_1_IN2_INDEX]);
     set_wheel_motor_2_direction_backward();
-    CHECK(mock_gpio_values[MOTOR_2_IN1_INDEX] == true);
-    CHECK(mock_gpio_values[MOTOR_2_IN2_INDEX] == false);
+    CHECK_TRUE(mock_gpio_values[MOTOR_2_IN1_INDEX]);
+    CHECK_FALSE(mock_gpio_values[MOTOR_2_IN2_INDEX]);
 }
 
 TEST(WheelMotorTests, CurrentLimitDetectionReadsPin)
 {
     init_wheel_motors_with_cpputest_checks();
     mock_gpio_values[CLD_INDEX] = true;
-    CHECK(is_current_limit_detection_asserted());
+    CHECK_TRUE(is_current_limit_detection_asserted());
     mock_gpio_values[CLD_INDEX] = false;
-    CHECK(!is_current_limit_detection_asserted());
+    CHECK_FALSE(is_current_limit_detection_asserted());
 }

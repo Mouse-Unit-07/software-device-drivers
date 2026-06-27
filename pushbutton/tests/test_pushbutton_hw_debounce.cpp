@@ -84,7 +84,7 @@ void init_config_pushbutton_with_cpputest_checks(void)
 void pushbutton_isr_with_cpputest_checks(void)
 {
     pushbutton_isr();
-    CHECK(get_pushbutton_count() == 1);
+    LONGS_EQUAL(1u, get_pushbutton_count());
 }
 
 /*============================================================================*/
@@ -131,7 +131,7 @@ TEST(PushbuttonTests, DeinitResetsCount)
     init_config_pushbutton_with_cpputest_checks();
     pushbutton_isr_with_cpputest_checks();
     deinit_pushbutton();
-    CHECK(get_pushbutton_count() == 0);
+    LONGS_EQUAL(0u, get_pushbutton_count());
 }
 
 TEST(PushbuttonTests, ClearPushbuttonCountResetsCount)
@@ -139,5 +139,5 @@ TEST(PushbuttonTests, ClearPushbuttonCountResetsCount)
     init_config_pushbutton_with_cpputest_checks();
     pushbutton_isr_with_cpputest_checks();
     clear_pushbutton_count();
-    CHECK(get_pushbutton_count() == 0);
+    LONGS_EQUAL(0u, get_pushbutton_count());
 }

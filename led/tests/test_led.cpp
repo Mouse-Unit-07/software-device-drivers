@@ -86,7 +86,7 @@ void dummy_deinit_gpio(void) {}
 bool dummy_read_gpio_pin(const struct gpio_handle *handle) { return true; }
 void mock_write_gpio_pin(const struct gpio_handle *handle, bool value)
 {
-    for (uint32_t i = 0u; i < LED_COUNT; i++) {
+    for (uint32_t i{0u}; i < LED_COUNT; i++) {
         if (handle == &(mock_handles[i])) {
             mock_led_outputs[i] = value;
         }
@@ -153,10 +153,10 @@ TEST(LedTests, DeinitTurnsOffLeds)
     set_led_d3_enabled(true);
     set_led_d4_enabled(true);
     deinit_leds();
-    CHECK(mock_led_outputs[LED_1_INDEX] == false);
-    CHECK(mock_led_outputs[LED_2_INDEX] == false);
-    CHECK(mock_led_outputs[LED_3_INDEX] == false);
-    CHECK(mock_led_outputs[LED_4_INDEX] == false);
+    CHECK_FALSE(mock_led_outputs[LED_1_INDEX]);
+    CHECK_FALSE(mock_led_outputs[LED_2_INDEX]);
+    CHECK_FALSE(mock_led_outputs[LED_3_INDEX]);
+    CHECK_FALSE(mock_led_outputs[LED_4_INDEX]);
 }
 
 TEST(LedTests, SetEnabledSetsLeds)
@@ -166,8 +166,8 @@ TEST(LedTests, SetEnabledSetsLeds)
     set_led_d2_enabled(true);
     set_led_d3_enabled(true);
     set_led_d4_enabled(true);
-    CHECK(mock_led_outputs[LED_1_INDEX] == true);
-    CHECK(mock_led_outputs[LED_2_INDEX] == true);
-    CHECK(mock_led_outputs[LED_3_INDEX] == true);
-    CHECK(mock_led_outputs[LED_4_INDEX] == true);
+    CHECK_TRUE(mock_led_outputs[LED_1_INDEX]);
+    CHECK_TRUE(mock_led_outputs[LED_2_INDEX]);
+    CHECK_TRUE(mock_led_outputs[LED_3_INDEX]);
+    CHECK_TRUE(mock_led_outputs[LED_4_INDEX]);
 }

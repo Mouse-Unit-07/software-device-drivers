@@ -110,12 +110,12 @@ TEST(VacuumTests, DeinitTurnsOffVacuum)
     init_vacuum_with_cpputest_checks();
     set_vacuum_speed(255u);
     deinit_vacuum();
-    CHECK(mock_duty_cycle_byte == 0u);
+    LONGS_EQUAL(0u, mock_duty_cycle_byte);
 }
 
 TEST(VacuumTests, SetSpeedSetsDutyCycle)
 {
     init_vacuum_with_cpputest_checks();
     set_vacuum_speed(255u);
-    CHECK(mock_duty_cycle_byte == 255u);
+    LONGS_EQUAL(255u, mock_duty_cycle_byte);
 }

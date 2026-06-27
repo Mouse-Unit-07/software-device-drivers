@@ -133,7 +133,7 @@ void dummy_init_clock(void){}
 void dummy_deinit_clock(void) {}
 void mock_delay_ms(uint32_t delay_time)
 {
-    CHECK(delay_time == 200u);
+    LONGS_EQUAL(200u, delay_time);
     delay_ms_called_count++;
 }
 void dummy_delay_us(uint32_t delay_time){}
@@ -173,8 +173,8 @@ void pushbutton_isr_with_cpputest_checks(void)
 {
     set_pushbutton_released();
     pushbutton_isr();
-    CHECK(delay_ms_called_count == 2);
-    CHECK(get_pushbutton_count() == 1);
+    LONGS_EQUAL(2u, delay_ms_called_count);
+    LONGS_EQUAL(1u, get_pushbutton_count());
 }
 
 /*============================================================================*/
@@ -223,7 +223,7 @@ TEST(PushbuttonTests, DeinitResetsCount)
     init_config_pushbutton_with_cpputest_checks();
     pushbutton_isr_with_cpputest_checks();
     deinit_pushbutton();
-    CHECK(get_pushbutton_count() == 0);
+    LONGS_EQUAL(0u, get_pushbutton_count());
 }
 
 TEST(PushbuttonTests, ClearPushbuttonCountResetsCount)
@@ -231,5 +231,5 @@ TEST(PushbuttonTests, ClearPushbuttonCountResetsCount)
     init_config_pushbutton_with_cpputest_checks();
     pushbutton_isr_with_cpputest_checks();
     clear_pushbutton_count();
-    CHECK(get_pushbutton_count() == 0);
+    LONGS_EQUAL(0u, get_pushbutton_count());
 }
